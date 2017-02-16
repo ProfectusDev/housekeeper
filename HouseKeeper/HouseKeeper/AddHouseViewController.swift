@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class AddHouseViewController: UserViewController {
+class AddHouseViewController: UIViewController {
     
     // complete viewDidLoad() responsory function
     override func viewDidLoad() {
@@ -83,7 +83,6 @@ class AddHouseViewController: UserViewController {
         
     }
     
-    
     func addHouse(address: AnyObject) {
         // Return house data to storage
         // COMPLETE
@@ -91,12 +90,12 @@ class AddHouseViewController: UserViewController {
         Alamofire.request(Constant.host + "/addHouse", parameters: parameters).responseString { response in
             if ((response.response) != nil) {
                 if response.result.isSuccess && (response.response?.statusCode)! < 400 {
-                    self.handleDismiss()
+                    //pass
                 } else {
-                    self.alert(title: "Add House Failed", message: response.result.value!)
+                    //pass
                 }
             } else {
-                self.alert(title: "Add House Failed", message: "Cannot connect to server.")
+                //pass
             }
         }
         // Dismiss Modal ViewController
