@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Alamofire
 
-class AddHouseViewController: UIViewController {
+class AddHouseViewController: UserViewController {
     
     // complete viewDidLoad() responsory function
     override func viewDidLoad() {
@@ -83,10 +84,21 @@ class AddHouseViewController: UIViewController {
     }
     
     
-    func addHouse(submit: AnyObject) {
+    func addHouse(address: AnyObject) {
         // Return house data to storage
         // COMPLETE
-        
+        let parameters: Parameters = ["address": address.text!]
+        Alamofire.request(Constant.host + "/addHouse", parameters: parameters).responseString { response in
+            if ((response.response) != nil) {
+                if response.result.isSuccess && (response.response?.statusCode)! < 400 {
+                    self.handleDismiss()
+                } else {
+                    self.alert(title: "Add House Failed", message: response.result.value!)
+                }
+            } else {
+                self.alert(title: "Add House Failed", message: "Cannot connect to server.")
+            }
+        }
         // Dismiss Modal ViewController
         self.dismiss(animated: true, completion: nil)
     }

@@ -15,7 +15,7 @@ class House {
     var beds: Int
     var baths: Int
     var rating: Float
-    var catagories: [Category]
+    var categories: [Category]
     
     init(address: String) {
         self.address = address
@@ -24,6 +24,7 @@ class House {
         beds = 0
         baths = 0
         rating = 0
-        catagories = []
+        categories = []
     }
+    
 }
