@@ -41,7 +41,8 @@ class LoginViewController: UserViewController {
                         self.handleDismiss()
                         let json = JSON(response.data!)
                         Networking.token = json["token"].stringValue
-                        Networking.userID = json["userID"].intValue
+                        Networking.userID = json["id"].intValue
+                        
                     } else {
                         self.alert(title: "Login Failed", message: response.result.value!)
                     }

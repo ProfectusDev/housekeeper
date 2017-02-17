@@ -108,7 +108,7 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     func updateKeyboardHeight(notification: Notification) {
-        keyboardHeight = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height)!
+        keyboardHeight = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height)!
     }
     
     func dismissKeyboard() {
