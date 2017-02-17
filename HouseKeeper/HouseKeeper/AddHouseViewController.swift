@@ -8,18 +8,63 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class AddHouseViewController: PopUpViewController {
+    
+    let address = TextField()
     
     // complete viewDidLoad() responsory function
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // address
+        address.placeholder = "Address"
+        address.layer.borderColor = Style.redColor.cgColor
+        
+        // submit
+        submit.addTarget(self, action: #selector(AddHouseViewController.handleAddHouse), for: .touchUpInside)
+        
+        // add subviews
+        view.addSubview(address)
+        
+        // make constraints
+        address.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-20.0)
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
+            make.height.equalTo(40)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func handleAddHouse() {
+        let headers = generateHeaders()
+        print(headers)
+        print(Networking.token)
+        let parameters: Parameters = ["address": address.text!, "id": Networking.userID]
+        Alamofire.request(Networking.baseURL + "/addHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .responseString { response in
+                if (response.error != nil) {
+//                    self.alert(title: "Add House Failed", message: (response.error?.localizedDescription)!)
+                    print("Add House Failed: " + (response.error?.localizedDescription)!)
+                    return
+                }
+                let success = validate(statusCode: (response.response?.statusCode)!)
+                if success {
+                    self.handleDismiss()
+                    let json = JSON(response.data!)
+                    print(json)
+                } else {
+//                    self.alert(title: "Registration Failed", message: response.result.value!)
+                    print("Add House Failed: " + response.result.value!)
+                }
+        }
     }
     
 

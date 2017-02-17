@@ -19,3 +19,11 @@ struct Networking {
 func validate(statusCode: Int) -> Bool {
     return statusCode >= 200 && statusCode < 300
 }
+
+func generateHeaders() -> HTTPHeaders {
+    if Networking.token == "" {
+        return [:]
+    } else {
+        return ["Authorization": "Bearer " + Networking.token]
+    }
+}

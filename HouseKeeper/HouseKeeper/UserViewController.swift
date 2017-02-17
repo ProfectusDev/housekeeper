@@ -220,13 +220,6 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         let addressTest = NSPredicate(format:"SELF MATCHES %@", addressRegEx)
         return addressTest.evaluate(with: addressString) && addressString.characters.count <= 256
     }
-    
-    func alert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(defaultAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

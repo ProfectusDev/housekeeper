@@ -13,7 +13,6 @@ class PopUpViewController: UIViewController {
     let radius = CGFloat(15.0)
     
     let titleLabel = UILabel()
-    let address = TextField()
     let submit = UIButton()
     let cancel = UIButton()
     
@@ -34,25 +33,19 @@ class PopUpViewController: UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)
         
-        // address
-        address.placeholder = "Address"
-        address.layer.borderColor = Style.redColor.cgColor
-        
         // cancel button
         cancel.setTitle("Cancel", for: UIControlState.normal)
         cancel.setTitleColor(Style.whiteColor, for: UIControlState.normal)
         cancel.backgroundColor = Style.redColor
-        cancel.addTarget(self, action: #selector(PopUpViewController.handleCancel), for: .touchUpInside)
+        cancel.addTarget(self, action: #selector(PopUpViewController.handleDismiss), for: .touchUpInside)
         
         // submit button
         submit.setTitle("Add", for: UIControlState.normal)
         submit.setTitleColor(Style.whiteColor, for: UIControlState.normal)
         submit.backgroundColor = Style.redColor
-//        submit.addTarget(self, action: #selector(self.addHouse), for: .touchUpInside)
         
         // Add primitives to the view
         view.addSubview(titleLabel)
-        view.addSubview(address)
         view.addSubview(submit)
         view.addSubview(cancel)
         
@@ -60,14 +53,6 @@ class PopUpViewController: UIViewController {
         titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.top.equalTo(30)
-        }
-        
-        address.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-20.0)
-            make.left.equalTo(20)
-            make.right.equalTo(-20)
-            make.height.equalTo(40)
         }
         
         submit.snp.makeConstraints { (make) in
@@ -98,7 +83,7 @@ class PopUpViewController: UIViewController {
         submit.round(corners: .bottomRight, radius: radius)
     }
     
-    func handleCancel() {
+    func handleDismiss() {
         self.dismiss(animated: true, completion: nil)
     }
     
