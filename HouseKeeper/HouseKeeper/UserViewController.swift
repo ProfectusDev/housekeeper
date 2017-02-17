@@ -212,6 +212,13 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func isValidAddress(addressString: String) -> Bool {
+        let addressRegEx = "[A-Z0-9a-z.]"
+        
+        let addressTest = NSPredicate(format:"SELF MATCHES %@", addressRegEx)
+        return addressTest.evaluate(with: addressString) && addressString.characters.count <= 256
+    }
+    
     func alert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)

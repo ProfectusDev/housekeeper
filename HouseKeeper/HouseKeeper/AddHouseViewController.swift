@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class AddHouseViewController: UIViewController {
     
@@ -82,11 +83,21 @@ class AddHouseViewController: UIViewController {
         
     }
     
-    
-    func addHouse(submit: AnyObject) {
+    func addHouse(address: AnyObject) {
         // Return house data to storage
         // COMPLETE
-        
+        let parameters: Parameters = ["address": address.text!]
+        Alamofire.request(Constant.host + "/addHouse", parameters: parameters).responseString { response in
+            if ((response.response) != nil) {
+                if response.result.isSuccess && (response.response?.statusCode)! < 400 {
+                    //pass
+                } else {
+                    //pass
+                }
+            } else {
+                //pass
+            }
+        }
         // Dismiss Modal ViewController
         self.dismiss(animated: true, completion: nil)
     }
