@@ -30,14 +30,14 @@ class LoginViewController: UserViewController {
             alert(title: "Login Failed", message: "Invalid password.")
         } else {
             let parameters: Parameters = ["email": email.text!, "password": password.text!]
-            Alamofire.request(Constant.host + "/createSession", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString { response in
+            Alamofire.request(Networking.baseURL + "/createSession", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString { response in
                 if ((response.response) != nil) {
                     if response.result.isSuccess && (response.response?.statusCode)! < 400 {
                         self.handleDismiss()
                         do {
                             if let json = try JSONSerialization.jsonObject(with: response.data!, options:.allowFragments) as? [String:Any] {
-                                Constant.token = (json["token"] as? String)!
-                                Constant.id = (json["id"] as? Int)!
+                                Networking.token = (json["token"] as? String)!
+                                Networking.id = (json["id"] as? Int)!
                             }
                         } catch let err{
                             print(err.localizedDescription)

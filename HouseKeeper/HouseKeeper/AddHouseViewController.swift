@@ -87,7 +87,7 @@ class AddHouseViewController: UIViewController {
         // Return house data to storage
         // COMPLETE
         let parameters: Parameters = ["address": address.text!]
-        Alamofire.request(Constant.host + "/addHouse", parameters: parameters).responseString { response in
+        Alamofire.request(Networking.baseURL + "/addHouse", parameters: parameters).responseString { response in
             if ((response.response) != nil) {
                 if response.result.isSuccess && (response.response?.statusCode)! < 400 {
                     //pass
