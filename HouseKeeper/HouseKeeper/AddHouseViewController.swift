@@ -48,9 +48,10 @@ class AddHouseViewController: PopUpViewController {
     }
     
     func handleAddHouse() {
+        if Networking.userID == 0 {
+            return
+        }
         let headers = generateHeaders()
-        print(headers)
-        print(Networking.token)
         let parameters: Parameters = ["address": address.text!, "id": Networking.userID]
         Alamofire.request(Networking.baseURL + "/addHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
@@ -64,6 +65,7 @@ class AddHouseViewController: PopUpViewController {
                     self.handleDismiss()
                     let json = JSON(response.data!)
                     print(json)
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
                 } else {
 //                    self.alert(title: "Registration Failed", message: response.result.value!)
                     print("Add House Failed: " + response.result.value!)

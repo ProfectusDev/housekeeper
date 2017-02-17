@@ -42,7 +42,7 @@ class LoginViewController: UserViewController {
                         let json = JSON(response.data!)
                         Networking.token = json["token"].stringValue
                         Networking.userID = json["id"].intValue
-                        
+                        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
                     } else {
                         self.alert(title: "Login Failed", message: response.result.value!)
                     }

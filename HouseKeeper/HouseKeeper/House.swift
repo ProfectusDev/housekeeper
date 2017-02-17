@@ -9,22 +9,16 @@
 import UIKit
 
 class House {
+    var hid: Int
     var address: String
-    var location: String
     var image: UIImage
-    var beds: Int
-    var baths: Int
-    var rating: Float
-    var categories: [Category]
     
-    init(address: String) {
+    public var description: String { return "\(address)" }
+    
+    init(hid: Int, address: String) {
         self.address = address
-        location = ""
+        self.hid = hid
         image = UIImage()
-        beds = 0
-        baths = 0
-        rating = 0
-        categories = []
     }
     
 }
