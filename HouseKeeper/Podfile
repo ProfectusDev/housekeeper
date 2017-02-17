@@ -5,4 +5,6 @@ use_frameworks!
 target "HouseKeeper" do
   pod "SnapKit"
   pod 'Alamofire', '~> 4.3'
+  pod 'JSONWebToken'
+  pod 'SwiftyJSON'
 end

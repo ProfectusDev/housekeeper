@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class LoginViewController: UserViewController {
 
@@ -29,10 +30,18 @@ class LoginViewController: UserViewController {
             alert(title: "Login Failed", message: "Invalid password.")
         } else {
             let parameters: Parameters = ["email": email.text!, "password": password.text!]
-            Alamofire.request(Constant.host + "/createSession", parameters: parameters).responseString { response in
+            Alamofire.request(Constant.host + "/createSession", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString { response in
                 if ((response.response) != nil) {
                     if response.result.isSuccess && (response.response?.statusCode)! < 400 {
                         self.handleDismiss()
+                        do {
+                            if let json = try JSONSerialization.jsonObject(with: response.data!, options:.allowFragments) as? [String:Any] {
+                                Constant.token = (json["token"] as? String)!
+                                Constant.id = (json["id"] as? Int)!
+                            }
+                        } catch let err{
+                            print(err.localizedDescription)
+                        }
                     } else {
                         self.alert(title: "Login Failed", message: response.result.value!)
                     }

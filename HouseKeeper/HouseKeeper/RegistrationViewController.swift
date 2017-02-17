@@ -29,7 +29,7 @@ class RegistrationViewController: UserViewController {
             alert(title: "Registration Failed", message: "Password must be between 8 and 32 characters.")
         } else {
             let parameters: Parameters = ["email": email.text!, "password": password.text!]
-            Alamofire.request(Constant.host + "/createUser", parameters: parameters).responseString { response in
+            Alamofire.request(Constant.host + "/createUser", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString { response in
                 if (response.response != nil) {
                     if response.result.isSuccess && (response.response?.statusCode)! < 400 {
                         self.handleDismiss()
