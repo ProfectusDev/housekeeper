@@ -21,6 +21,7 @@ class AddHouseViewController: PopUpViewController {
         // address
         address.placeholder = "Address"
         address.layer.borderColor = Style.redColor.cgColor
+        address.delegate = self
         
         // submit
         submit.addTarget(self, action: #selector(AddHouseViewController.handleAddHouse), for: .touchUpInside)

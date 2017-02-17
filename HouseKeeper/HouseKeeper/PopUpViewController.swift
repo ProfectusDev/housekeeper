@@ -8,16 +8,22 @@
 
 import UIKit
 
-class PopUpViewController: UIViewController {
+class PopUpViewController: UIViewController, UITextFieldDelegate {
     
     let radius = CGFloat(15.0)
     
     let titleLabel = UILabel()
     let submit = UIButton()
     let cancel = UIButton()
+    var keyboardHeight = CGFloat(200.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // events
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UserViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        NotificationCenter.default.addObserver(self, selector: #selector(UserViewController.updateKeyboardHeight), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 
         // view styles
         view.backgroundColor = Style.whiteColor
@@ -71,6 +77,23 @@ class PopUpViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        layoutFrameWithWithoutKeyboard()
+        
+        cancel.round(corners: .bottomLeft, radius: radius)
+        submit.round(corners: .bottomRight, radius: radius)
+    }
+    
+    func layoutFrameWithKeyboard() {
+        let width = Style.screenWidth - 40.0
+        let height = width * 0.75
+        let x = CGFloat(20.0)
+        let y = Style.screenHeight - keyboardHeight - height - 20.0
+        let frame  = CGRect(x: x, y: y, width: width, height: height)
+        
+        self.view.frame = frame
+    }
+    
+    func layoutFrameWithWithoutKeyboard() {
         let width = Style.screenWidth - 40.0
         let height = width * 0.75
         let x = CGFloat(20.0)
@@ -78,13 +101,35 @@ class PopUpViewController: UIViewController {
         let frame  = CGRect(x: x, y: y, width: width, height: height)
         
         self.view.frame = frame
-        
-        cancel.round(corners: .bottomLeft, radius: radius)
-        submit.round(corners: .bottomRight, radius: radius)
     }
     
     func handleDismiss() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func updateKeyboardHeight(notification: Notification) {
+        keyboardHeight = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height)!
+    }
+    
+    func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        dismissKeyboard()
+        return false
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.3) {
+            self.layoutFrameWithKeyboard()
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.3) {
+            self.layoutFrameWithWithoutKeyboard()
+        }
     }
     
     override func didReceiveMemoryWarning() {
