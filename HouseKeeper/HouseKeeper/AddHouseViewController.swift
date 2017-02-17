@@ -18,6 +18,9 @@ class AddHouseViewController: PopUpViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // title
+        titleLabel.text = "Add House"
+        
         // address
         address.placeholder = "Address"
         address.layer.borderColor = Style.redColor.cgColor
