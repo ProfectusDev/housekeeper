@@ -28,17 +28,16 @@ class RegistrationViewController: UserViewController {
         } else if !isValidPassword(passwordString: password.text!) {
             alert(title: "Registration Failed", message: "Password must be between 8 and 32 characters.")
         } else {
-            let parameters: Parameters = ["email": email.text!, "password": password.text!]
-            Alamofire.request(Constant.host + "/createUser", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString { response in
-                if (response.response != nil) {
-                    if response.result.isSuccess && (response.response?.statusCode)! < 400 {
+            let parameters: Parameters = ["email": email, "password": password]
+            Alamofire.request(Networking.baseURL + "/createUser", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseString { response in
+                    switch response.result {
+                    case .success:
                         self.handleDismiss()
-                    } else {
+                    case .failure(let error):
+                        print(error)
                         self.alert(title: "Registration Failed", message: response.result.value!)
                     }
-                } else {
-                    self.alert(title: "Registration Failed", message: "Cannot connect to server.")
-                }
             }
         }
     }

@@ -20,7 +20,7 @@
 		DC11A8C01DD6795400E49EB0 /* Criterion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC11A8BF1DD6795400E49EB0 /* Criterion.swift */; };
 		DC11A8C21DD67A3900E49EB0 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC11A8C11DD67A3900E49EB0 /* Category.swift */; };
 		DC396EC01E39C04D005E5427 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC396EBF1E39C04D005E5427 /* TextField.swift */; };
-		DC71DD5F1E3BF79B0075DC0C /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC71DD5E1E3BF79B0075DC0C /* Constant.swift */; };
+		DC71DD5F1E3BF79B0075DC0C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC71DD5E1E3BF79B0075DC0C /* Networking.swift */; };
 		DC72A2C71DDF8D56009421E0 /* HouseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC72A2C61DDF8D56009421E0 /* HouseTableViewCell.swift */; };
 		DC9CF5E01E39164800CEC7DD /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9CF5DF1E39164800CEC7DD /* UserViewController.swift */; };
 		DCE94F491DD10B57002FB232 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE94F481DD10B57002FB232 /* AppDelegate.swift */; };
@@ -45,7 +45,7 @@
 		DC11A8BF1DD6795400E49EB0 /* Criterion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Criterion.swift; sourceTree = "<group>"; };
 		DC11A8C11DD67A3900E49EB0 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		DC396EBF1E39C04D005E5427 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		DC71DD5E1E3BF79B0075DC0C /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		DC71DD5E1E3BF79B0075DC0C /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		DC72A2C61DDF8D56009421E0 /* HouseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HouseTableViewCell.swift; sourceTree = "<group>"; };
 		DC9CF5DF1E39164800CEC7DD /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		DCE94F451DD10B57002FB232 /* HouseKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HouseKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,7 +156,7 @@
 			children = (
 				DCE94F481DD10B57002FB232 /* AppDelegate.swift */,
 				DC0B53FC1DD3B0A200DC1795 /* Style.swift */,
-				DC71DD5E1E3BF79B0075DC0C /* Constant.swift */,
+				DC71DD5E1E3BF79B0075DC0C /* Networking.swift */,
 				DCE94F4A1DD10B57002FB232 /* RootViewController.swift */,
 				DC0B53EC1DD3AD1E00DC1795 /* Account */,
 				DC0B53ED1DD3AD3200DC1795 /* List */,
@@ -304,7 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC11A8C01DD6795400E49EB0 /* Criterion.swift in Sources */,
-				DC71DD5F1E3BF79B0075DC0C /* Constant.swift in Sources */,
+				DC71DD5F1E3BF79B0075DC0C /* Networking.swift in Sources */,
 				DC9CF5E01E39164800CEC7DD /* UserViewController.swift in Sources */,
 				DC0B53F11DD3AE5100DC1795 /* LoginViewController.swift in Sources */,
 				DC396EC01E39C04D005E5427 /* TextField.swift in Sources */,
