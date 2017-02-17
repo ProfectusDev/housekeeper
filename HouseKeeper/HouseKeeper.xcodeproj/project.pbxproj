@@ -106,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				DC0B53F81DD3AF5800DC1795 /* HouseViewController.swift */,
-				DC11A8BA1DD65A4300E49EB0 /* AddCriteriaViewController.swift */,
 			);
 			name = House;
 			sourceTree = "<group>";
@@ -114,6 +113,7 @@
 		DC0B53EF1DD3AD6700DC1795 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				DC11A8BA1DD65A4300E49EB0 /* AddCriteriaViewController.swift */,
 				DC0B53FA1DD3AF6200DC1795 /* SettingsViewController.swift */,
 			);
 			name = Settings;

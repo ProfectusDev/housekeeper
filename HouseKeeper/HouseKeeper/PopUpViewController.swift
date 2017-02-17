@@ -28,8 +28,8 @@ class PopUpViewController: UIViewController {
         view.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         
         // title
-        titleLabel.text = "Title"
-        titleLabel.textColor = Style.blackColor
+        titleLabel.text = "Add House"
+        titleLabel.textColor = Style.whiteColor
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)
         

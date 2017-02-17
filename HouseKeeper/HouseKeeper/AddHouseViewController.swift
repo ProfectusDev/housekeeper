@@ -18,8 +18,7 @@ class AddHouseViewController: PopUpViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-<<<<<<< Updated upstream
-=======
+
         // Setup view primitives
         view.backgroundColor = Style.redColor
         
@@ -31,18 +30,17 @@ class AddHouseViewController: PopUpViewController {
         // name
         let name = UITextField()
         name.placeholder = "Name Your House!"
+        name.layer.borderColor = Style.redColor.cgColor
         name.borderStyle  = UITextBorderStyle.roundedRect
         name.layer.borderColor = UIColor.white.cgColor
         name.layer.cornerRadius = 10
         name.backgroundColor = UIColor.white
         name.layer.borderWidth = 1.0
-        
->>>>>>> Stashed changes
+
         // address
+        let address = UITextField()
         address.placeholder = "Address"
-<<<<<<< Updated upstream
         address.layer.borderColor = Style.redColor.cgColor
-=======
         address.borderStyle  = UITextBorderStyle.roundedRect
         address.layer.borderColor = UIColor.white.cgColor
         address.layer.cornerRadius = 10
@@ -50,23 +48,23 @@ class AddHouseViewController: PopUpViewController {
         address.layer.borderWidth = 1.0
         
         // description
-        let description = UITextField()
-        description.placeholder = "Notes"
-        description.borderStyle = UITextBorderStyle.roundedRect
+        let description = UITextView()
+        description.text = "Notes"
+        description.clearsOnInsertion = true
         description.layer.borderColor = UIColor.white.cgColor
         description.layer.cornerRadius = 10
         description.backgroundColor = UIColor.white
         description.layer.borderWidth = 1.0
         
->>>>>>> Stashed changes
+
         
         // submit
         submit.addTarget(self, action: #selector(AddHouseViewController.handleAddHouse), for: .touchUpInside)
         
-<<<<<<< Updated upstream
+
         // add subviews
-        view.addSubview(address)
-=======
+        //view.addSubview(address)
+
         // Add primitives to the view
         view.addSubview(title)
         view.addSubview(name)
@@ -74,32 +72,33 @@ class AddHouseViewController: PopUpViewController {
         view.addSubview(description)
         view.addSubview(submit)
         view.addSubview(cancel)
->>>>>>> Stashed changes
+
         
         // make constraints
         address.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-<<<<<<< Updated upstream
-            make.centerY.equalToSuperview().offset(-20.0)
+
+            make.centerY.equalToSuperview().offset(20.0)
             make.left.equalTo(20)
             make.right.equalTo(-20)
             make.height.equalTo(40)
-=======
-            make.centerY.equalTo( (view.frame.height / 4) )
-            make.left.equalTo(10)
-            make.right.equalTo(-10)
+
+//            make.centerY.equalTo( (view.frame.height / 4) )
+//            make.left.equalTo(10)
+//            make.right.equalTo(-10)
         }
         // name
         name.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.centerY.equalTo( (view.frame.height) - ( (view.frame.height / 3) * 2) )    
-            make.left.equalTo(10)
-            make.right.equalTo(-10)
+            make.centerY.equalToSuperview().offset(-50.0)
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
+            make.height.equalTo(40)
         }
         // description
         description.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.centerY.equalTo( (view.frame.height) - (view.frame.height / 3) )
+            make.centerY.equalTo(view.frame.height)
             make.left.equalTo(10)
             make.right.equalTo(-10)
         }
@@ -118,7 +117,7 @@ class AddHouseViewController: PopUpViewController {
         
     }
     
-    func addHouse(address: AnyObject) {
+    func addHouse(address: AnyObject, Constant: AnyObject) {
         // Return house data to storage
         // COMPLETE
         let parameters: Parameters = ["address": address.text!]
@@ -132,7 +131,6 @@ class AddHouseViewController: PopUpViewController {
             } else {
                 //pass
             }
->>>>>>> Stashed changes
         }
     }
 
