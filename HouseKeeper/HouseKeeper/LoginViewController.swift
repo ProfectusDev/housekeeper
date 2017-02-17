@@ -30,24 +30,21 @@ class LoginViewController: UserViewController {
             alert(title: "Login Failed", message: "Invalid password.")
         } else {
             let parameters: Parameters = ["email": email.text!, "password": password.text!]
-            Alamofire.request(Networking.baseURL + "/createSession", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString { response in
-                if ((response.response) != nil) {
-                    if response.result.isSuccess && (response.response?.statusCode)! < 400 {
+            Alamofire.request(Networking.baseURL + "/login", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseString { response in
+                    if (response.error != nil) {
+                        self.alert(title: "Registration Failed", message: (response.error?.localizedDescription)!)
+                        return
+                    }
+                    let success = validate(statusCode: (response.response?.statusCode)!)
+                    if success {
                         self.handleDismiss()
-                        do {
-                            if let json = try JSONSerialization.jsonObject(with: response.data!, options:.allowFragments) as? [String:Any] {
-                                Networking.token = (json["token"] as? String)!
-                                Networking.id = (json["id"] as? Int)!
-                            }
-                        } catch let err{
-                            print(err.localizedDescription)
-                        }
+                        let json = JSON(response.data!)
+                        Networking.token = json["token"].stringValue
+                        Networking.userID = json["userID"].intValue
                     } else {
                         self.alert(title: "Login Failed", message: response.result.value!)
                     }
-                } else {
-                    self.alert(title: "Login Failed", message: "Cannot connect to server.")
-                }
             }
         }
     }

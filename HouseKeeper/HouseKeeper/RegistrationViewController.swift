@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class RegistrationViewController: UserViewController {
 
@@ -28,14 +29,20 @@ class RegistrationViewController: UserViewController {
         } else if !isValidPassword(passwordString: password.text!) {
             alert(title: "Registration Failed", message: "Password must be between 8 and 32 characters.")
         } else {
-            let parameters: Parameters = ["email": email, "password": password]
-            Alamofire.request(Networking.baseURL + "/createUser", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            let parameters: Parameters = ["email": email.text!, "password": password.text!]
+            Alamofire.request(Networking.baseURL + "/register", method: .post, parameters: parameters, encoding: JSONEncoding.default)
                 .responseString { response in
-                    switch response.result {
-                    case .success:
+                    if (response.error != nil) {
+                        self.alert(title: "Registration Failed", message: (response.error?.localizedDescription)!)
+                        return
+                    }
+                    let success = validate(statusCode: (response.response?.statusCode)!)
+                    if success {
                         self.handleDismiss()
-                    case .failure(let error):
-                        print(error)
+                        let json = JSON(response.data!)
+                        Networking.token = json["token"].stringValue
+                        Networking.userID = json["userID"].intValue
+                    } else {
                         self.alert(title: "Registration Failed", message: response.result.value!)
                     }
             }
