@@ -18,23 +18,121 @@ class AddHouseViewController: PopUpViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+<<<<<<< Updated upstream
+=======
+        // Setup view primitives
+        view.backgroundColor = Style.redColor
+        
+        // title
+        let title = UILabel()
+        title.text = "New House"
+        title.textColor = UIColor.white
+        
+        // name
+        let name = UITextField()
+        name.placeholder = "Name Your House!"
+        name.borderStyle  = UITextBorderStyle.roundedRect
+        name.layer.borderColor = UIColor.white.cgColor
+        name.layer.cornerRadius = 10
+        name.backgroundColor = UIColor.white
+        name.layer.borderWidth = 1.0
+        
+>>>>>>> Stashed changes
         // address
         address.placeholder = "Address"
+<<<<<<< Updated upstream
         address.layer.borderColor = Style.redColor.cgColor
+=======
+        address.borderStyle  = UITextBorderStyle.roundedRect
+        address.layer.borderColor = UIColor.white.cgColor
+        address.layer.cornerRadius = 10
+        address.backgroundColor = UIColor.white
+        address.layer.borderWidth = 1.0
+        
+        // description
+        let description = UITextField()
+        description.placeholder = "Notes"
+        description.borderStyle = UITextBorderStyle.roundedRect
+        description.layer.borderColor = UIColor.white.cgColor
+        description.layer.cornerRadius = 10
+        description.backgroundColor = UIColor.white
+        description.layer.borderWidth = 1.0
+        
+>>>>>>> Stashed changes
         
         // submit
         submit.addTarget(self, action: #selector(AddHouseViewController.handleAddHouse), for: .touchUpInside)
         
+<<<<<<< Updated upstream
         // add subviews
         view.addSubview(address)
+=======
+        // Add primitives to the view
+        view.addSubview(title)
+        view.addSubview(name)
+        view.addSubview(address)
+        view.addSubview(description)
+        view.addSubview(submit)
+        view.addSubview(cancel)
+>>>>>>> Stashed changes
         
         // make constraints
         address.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
+<<<<<<< Updated upstream
             make.centerY.equalToSuperview().offset(-20.0)
             make.left.equalTo(20)
             make.right.equalTo(-20)
             make.height.equalTo(40)
+=======
+            make.centerY.equalTo( (view.frame.height / 4) )
+            make.left.equalTo(10)
+            make.right.equalTo(-10)
+        }
+        // name
+        name.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo( (view.frame.height) - ( (view.frame.height / 3) * 2) )    
+            make.left.equalTo(10)
+            make.right.equalTo(-10)
+        }
+        // description
+        description.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo( (view.frame.height) - (view.frame.height / 3) )
+            make.left.equalTo(10)
+            make.right.equalTo(-10)
+        }
+        // submit
+        submit.snp.makeConstraints { (make) in
+            make.right.equalTo(-15)
+            make.width.equalTo((view.frame.width / 2) - 30)
+            make.bottom.equalTo(-10)
+        }
+        // cancel
+        cancel.snp.makeConstraints { (make) in
+            make.left.equalTo(15)
+            make.width.equalTo((view.frame.width / 2) - 30)
+            make.bottom.equalTo(-10)
+        }
+        
+    }
+    
+    func addHouse(address: AnyObject) {
+        // Return house data to storage
+        // COMPLETE
+        let parameters: Parameters = ["address": address.text!]
+        Alamofire.request(Constant.host + "/addHouse", parameters: parameters).responseString { response in
+            if ((response.response) != nil) {
+                if response.result.isSuccess && (response.response?.statusCode)! < 400 {
+                    //pass
+                } else {
+                    //pass
+                }
+            } else {
+                //pass
+            }
+>>>>>>> Stashed changes
         }
     }
 
