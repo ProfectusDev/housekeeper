@@ -36,6 +36,7 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         titleLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)
         
         // email
+        email.layer.borderColor = Style.whiteColor.cgColor
         email.placeholder = "Email"
         email.textColor = Style.whiteColor
         email.autocapitalizationType = .none
@@ -44,6 +45,7 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         email.delegate = self
         
         // password
+        password.layer.borderColor = Style.whiteColor.cgColor
         password.placeholder = "Password"
         password.textColor = Style.whiteColor
         password.isSecureTextEntry = true

@@ -19,7 +19,6 @@ class TextField: UITextField {
     */
     
     override func draw(_ rect: CGRect) {
-        layer.borderColor = Style.whiteColor.cgColor
         layer.borderWidth = 2.0
         layer.cornerRadius = rect.size.height / 2
         layer.masksToBounds = true

@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
         
+        Style.screenWidth = UIScreen.main.bounds.size.width
+        Style.screenHeight = UIScreen.main.bounds.size.height
+        
         if (true) {
             let userVC = UINavigationController()
             userVC.setViewControllers([LoginViewController(), RegistrationViewController()], animated: false)
