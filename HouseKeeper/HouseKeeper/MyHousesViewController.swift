@@ -15,14 +15,18 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     var houses: [House] = []
     let tableView = UITableView()
+    let refreshControl = UIRefreshControl()
     
     override func loadView() {
         super.loadView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(MyHousesViewController.loadHouses), name: NSNotification.Name(rawValue: "loadHouses"), object: nil)
         
-        // Self
+        // VC
         title = "My Houses"
+//        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
         
         // Table View
         tableView.delegate = self
@@ -76,10 +80,14 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
                     self.tableView.reloadData()
                 } else {
                     // self.alert(title: "Registration Failed", message: response.result.value!)
-                    print("Add House Failed: " + response.result.value!)
+                    print("Get House Failed: " + response.result.value!)
                 }
         }
-
+    }
+    
+    func refresh() {
+        loadHouses()
+        refreshControl.endRefreshing()
     }
     
     func addHouse() {
