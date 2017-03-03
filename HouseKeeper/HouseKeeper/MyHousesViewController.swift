@@ -54,12 +54,11 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func loadHouses() {
-        if (Networking.userID == 0) {
+        if (Networking.token == "") {
             return
         }
         let headers = generateHeaders()
-        let parameters: Parameters = ["id": Networking.userID]
-        Alamofire.request(Networking.baseURL + "/getHouses", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(Networking.baseURL + "/getHouses", method: .get, headers: headers)
             .responseString { response in
                 if (response.error != nil) {
                     // self.alert(title: "Add House Failed", message: (response.error?.localizedDescription)!)

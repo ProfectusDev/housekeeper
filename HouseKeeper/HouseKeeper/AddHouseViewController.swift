@@ -48,11 +48,11 @@ class AddHouseViewController: PopUpViewController {
     }
     
     func handleAddHouse() {
-        if Networking.userID == 0 {
+        if Networking.token == "" {
             return
         }
         let headers = generateHeaders()
-        let parameters: Parameters = ["address": address.text!, "id": Networking.userID]
+        let parameters: Parameters = ["address": address.text!]
         Alamofire.request(Networking.baseURL + "/addHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 if (response.error != nil) {
