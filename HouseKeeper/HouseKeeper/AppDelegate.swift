@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
+
+struct defaultsKeys {
+    static let email = "email"
+    static let password = "password"
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,11 +34,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Style.screenWidth = UIScreen.main.bounds.size.width
         Style.screenHeight = UIScreen.main.bounds.size.height
         
-        if (true) {
-            let userVC = UINavigationController()
-            userVC.setViewControllers([LoginViewController(), RegistrationViewController()], animated: false)
-            userVC.setNavigationBarHidden(true, animated: false)
-            rootVC.present(userVC, animated: false, completion: nil)
+        let defaults = UserDefaults.standard
+        let email = defaults.string(forKey: defaultsKeys.email)
+        let password = defaults.string(forKey: defaultsKeys.password)
+        
+        if ((email != nil) && (password != nil)) {
+            let parameters: Parameters = ["email": email!, "password": password!]
+            Alamofire.request(Networking.baseURL + "/login", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseString { response in
+                    if (response.error != nil) {
+                        self.launchLoginVC(rootVC: rootVC)
+                        return
+                    }
+                    let success = validate(statusCode: (response.response?.statusCode)!)
+                    if success {
+                        let json = JSON(response.data!)
+                        Networking.token = json["token"].stringValue
+                        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
+                    }
+            }
+        } else {
+            launchLoginVC(rootVC: rootVC)
         }
         
         return true
@@ -57,6 +80,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func launchLoginVC(rootVC: UIViewController) {
+        let userVC = UINavigationController()
+        userVC.setViewControllers([LoginViewController(), RegistrationViewController()], animated: false)
+        userVC.setNavigationBarHidden(true, animated: false)
+        rootVC.present(userVC, animated: false, completion: nil)
     }
 
 

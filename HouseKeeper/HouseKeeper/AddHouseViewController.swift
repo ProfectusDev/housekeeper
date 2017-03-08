@@ -56,8 +56,7 @@ class AddHouseViewController: PopUpViewController {
         Alamofire.request(Networking.baseURL + "/addHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 if (response.error != nil) {
-//                    self.alert(title: "Add House Failed", message: (response.error?.localizedDescription)!)
-                    print("Add House Failed: " + (response.error?.localizedDescription)!)
+                    print("Add house failed: " + (response.error?.localizedDescription)!)
                     return
                 }
                 let success = validate(statusCode: (response.response?.statusCode)!)
@@ -67,8 +66,7 @@ class AddHouseViewController: PopUpViewController {
                     print(json)
                     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
                 } else {
-//                    self.alert(title: "Registration Failed", message: response.result.value!)
-                    print("Add House Failed: " + response.result.value!)
+                    print("Add house failed: " + response.result.value!)
                 }
         }
     }

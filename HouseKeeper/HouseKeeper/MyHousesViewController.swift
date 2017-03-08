@@ -38,7 +38,6 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
             make.edges.equalToSuperview()
         }
         
-        
         // Bottom Toolbar
         let bottomToolbar = UIToolbar()
         let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MyHousesViewController.addHouse))
@@ -51,6 +50,9 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
             make.bottom.equalTo(0)
             make.width.equalToSuperview()
         }
+        
+        // Navigation bar
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     func loadHouses() {
@@ -61,8 +63,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         Alamofire.request(Networking.baseURL + "/getHouses", method: .get, headers: headers)
             .responseString { response in
                 if (response.error != nil) {
-                    // self.alert(title: "Add House Failed", message: (response.error?.localizedDescription)!)
-                    print("Get Houses Failed: " + (response.error?.localizedDescription)!)
+                    print("Get houses failed: " + (response.error?.localizedDescription)!)
                     return
                 }
                 let success = validate(statusCode: (response.response?.statusCode)!)
@@ -79,7 +80,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
                     self.tableView.reloadData()
                 } else {
                     // self.alert(title: "Registration Failed", message: response.result.value!)
-                    print("Get House Failed: " + response.result.value!)
+                    print("Get house failed: " + response.result.value!)
                 }
         }
     }
@@ -99,6 +100,11 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         present(SettingsViewController(), animated: true, completion: nil)
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        self.tableView.setEditing(editing, animated: animated)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel!.text = houses[indexPath.row].address
@@ -113,6 +119,28 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         navigationController?.pushViewController(HouseViewController(), animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            let headers = generateHeaders()
+            let parameters: Parameters = ["hid": self.houses[indexPath.row].hid]
+            Alamofire.request(Networking.baseURL + "/deleteHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                .responseString { response in
+                    if (response.error != nil) {
+                        print("Delete house failed: " + (response.error?.localizedDescription)!)
+                        return
+                    }
+                    let success = validate(statusCode: (response.response?.statusCode)!)
+                    if success {
+                        self.houses.remove(at: indexPath.row)
+                        self.tableView.reloadData()
+                    } else {
+                        // self.alert(title: "Registration Failed", message: response.result.value!)
+                        print("Delete house failed: " + response.result.value!)
+                    }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
