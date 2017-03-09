@@ -24,14 +24,14 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         
         // VC
         title = "My Houses"
-//        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
         
         // Table View
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "house")
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints { (make) in
@@ -106,7 +106,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "house")
         cell.textLabel!.text = houses[indexPath.row].address
         cell.imageView?.image = UIImage(named: "Placeholder")
         
@@ -118,7 +118,8 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigationController?.pushViewController(HouseViewController(), animated: true)
+        let hid = houses[indexPath.row].hid
+        navigationController?.pushViewController(HouseViewController(hid: hid), animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
