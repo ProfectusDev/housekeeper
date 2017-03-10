@@ -25,6 +25,8 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func loadView() {
         super.loadView()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.loadCriteria), name: NSNotification.Name(rawValue: "loadCriteria"), object: nil)
+        
         // VC
         view.backgroundColor = UIColor.white
         
@@ -98,7 +100,11 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if indexPath.row < criteria[indexPath.section].count {
             // nothing
         } else {
-            // present view
+            let modal = AddCriterionViewController()
+            modal.hid = hid
+            modal.modalPresentationStyle = .overCurrentContext
+            present(modal, animated: true, completion: nil)
+            NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "blur")))
         }
     }
     

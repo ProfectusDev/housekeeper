@@ -15,7 +15,6 @@
 		DC0B53F91DD3AF5800DC1795 /* HouseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0B53F81DD3AF5800DC1795 /* HouseViewController.swift */; };
 		DC0B53FB1DD3AF6200DC1795 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0B53FA1DD3AF6200DC1795 /* SettingsViewController.swift */; };
 		DC0B53FD1DD3B0A200DC1795 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0B53FC1DD3B0A200DC1795 /* Style.swift */; };
-		DC11A8BB1DD65A4300E49EB0 /* AddCriteriaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC11A8BA1DD65A4300E49EB0 /* AddCriteriaViewController.swift */; };
 		DC11A8BE1DD6794700E49EB0 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC11A8BD1DD6794700E49EB0 /* House.swift */; };
 		DC11A8C01DD6795400E49EB0 /* Criterion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC11A8BF1DD6795400E49EB0 /* Criterion.swift */; };
 		DC393ECB1E56F86F008D92AB /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC393ECA1E56F86F008D92AB /* PopUpViewController.swift */; };
@@ -23,6 +22,7 @@
 		DC396EC01E39C04D005E5427 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC396EBF1E39C04D005E5427 /* TextField.swift */; };
 		DC4F91B31E71058D008302F5 /* CriterionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F91B21E71058D008302F5 /* CriterionTableViewCell.swift */; };
 		DC4F91B51E728916008302F5 /* AddCriterionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F91B41E728916008302F5 /* AddCriterionTableViewCell.swift */; };
+		DC4F91B71E731765008302F5 /* AddCriterionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F91B61E731765008302F5 /* AddCriterionViewController.swift */; };
 		DC71DD5F1E3BF79B0075DC0C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC71DD5E1E3BF79B0075DC0C /* Networking.swift */; };
 		DC72A2C71DDF8D56009421E0 /* HouseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC72A2C61DDF8D56009421E0 /* HouseTableViewCell.swift */; };
 		DC9CF5E01E39164800CEC7DD /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9CF5DF1E39164800CEC7DD /* UserViewController.swift */; };
@@ -43,7 +43,6 @@
 		DC0B53F81DD3AF5800DC1795 /* HouseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HouseViewController.swift; sourceTree = "<group>"; };
 		DC0B53FA1DD3AF6200DC1795 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		DC0B53FC1DD3B0A200DC1795 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
-		DC11A8BA1DD65A4300E49EB0 /* AddCriteriaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCriteriaViewController.swift; sourceTree = "<group>"; };
 		DC11A8BD1DD6794700E49EB0 /* House.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
 		DC11A8BF1DD6795400E49EB0 /* Criterion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Criterion.swift; sourceTree = "<group>"; };
 		DC393ECA1E56F86F008D92AB /* PopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +50,7 @@
 		DC396EBF1E39C04D005E5427 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		DC4F91B21E71058D008302F5 /* CriterionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriterionTableViewCell.swift; sourceTree = "<group>"; };
 		DC4F91B41E728916008302F5 /* AddCriterionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCriterionTableViewCell.swift; sourceTree = "<group>"; };
+		DC4F91B61E731765008302F5 /* AddCriterionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCriterionViewController.swift; sourceTree = "<group>"; };
 		DC71DD5E1E3BF79B0075DC0C /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		DC72A2C61DDF8D56009421E0 /* HouseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HouseTableViewCell.swift; sourceTree = "<group>"; };
 		DC9CF5DF1E39164800CEC7DD /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +110,7 @@
 				DC0B53F81DD3AF5800DC1795 /* HouseViewController.swift */,
 				DC4F91B21E71058D008302F5 /* CriterionTableViewCell.swift */,
 				DC4F91B41E728916008302F5 /* AddCriterionTableViewCell.swift */,
+				DC4F91B61E731765008302F5 /* AddCriterionViewController.swift */,
 			);
 			name = House;
 			sourceTree = "<group>";
@@ -117,7 +118,6 @@
 		DC0B53EF1DD3AD6700DC1795 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				DC11A8BA1DD65A4300E49EB0 /* AddCriteriaViewController.swift */,
 				DC0B53FA1DD3AF6200DC1795 /* SettingsViewController.swift */,
 			);
 			name = Settings;
@@ -312,6 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC4F91B71E731765008302F5 /* AddCriterionViewController.swift in Sources */,
 				DC11A8C01DD6795400E49EB0 /* Criterion.swift in Sources */,
 				DC71DD5F1E3BF79B0075DC0C /* Networking.swift in Sources */,
 				DC9CF5E01E39164800CEC7DD /* UserViewController.swift in Sources */,
@@ -331,7 +332,6 @@
 				DC0B53FD1DD3B0A200DC1795 /* Style.swift in Sources */,
 				DC0B53FB1DD3AF6200DC1795 /* SettingsViewController.swift in Sources */,
 				DC72A2C71DDF8D56009421E0 /* HouseTableViewCell.swift in Sources */,
-				DC11A8BB1DD65A4300E49EB0 /* AddCriteriaViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

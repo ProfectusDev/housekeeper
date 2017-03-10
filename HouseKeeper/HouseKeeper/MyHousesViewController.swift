@@ -98,6 +98,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         let modal = AddHouseViewController()
         modal.modalPresentationStyle = .overCurrentContext
         present(modal, animated: true, completion: nil)
+        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "blur")))
     }
     
     func openSettings() {

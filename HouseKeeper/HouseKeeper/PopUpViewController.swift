@@ -15,7 +15,7 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
     let titleLabel = UILabel()
     let submit = UIButton()
     let cancel = UIButton()
-    var keyboardHeight = CGFloat(200.0)
+    var keyboardHeight = CGFloat(258.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +24,8 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
         let tap = UITapGestureRecognizer(target: self, action: #selector(UserViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(UserViewController.updateKeyboardHeight), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        self.view.endEditing(false)
+        self.view.endEditing(true)
 
         // view styles
         view.backgroundColor = Style.whiteColor
@@ -77,7 +79,7 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        layoutFrameWithWithoutKeyboard()
+        layoutFrameWithoutKeyboard()
         
         cancel.round(corners: .bottomLeft, radius: radius)
         submit.round(corners: .bottomRight, radius: radius)
@@ -93,7 +95,7 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
         self.view.frame = frame
     }
     
-    func layoutFrameWithWithoutKeyboard() {
+    func layoutFrameWithoutKeyboard() {
         let width = Style.screenWidth - 40.0
         let height = width * 0.75
         let x = CGFloat(20.0)
@@ -105,10 +107,11 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
     
     func handleDismiss() {
         self.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "unblur")))
     }
     
     func updateKeyboardHeight(notification: Notification) {
-        keyboardHeight = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height)!
+        keyboardHeight = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height)!
     }
     
     func dismissKeyboard() {
@@ -128,7 +131,7 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
-            self.layoutFrameWithWithoutKeyboard()
+            self.layoutFrameWithoutKeyboard()
         }
     }
     
