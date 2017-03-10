@@ -27,9 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let myHousesVC = MyHousesViewController()
         let rootVC = RootViewController(rootViewController: myHousesVC)
         
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = rootVC
-        self.window?.makeKeyAndVisible()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = rootVC
+        window?.tintColor = Style.redColor
+        window?.makeKeyAndVisible()
         
         Style.screenWidth = UIScreen.main.bounds.size.width
         Style.screenHeight = UIScreen.main.bounds.size.height

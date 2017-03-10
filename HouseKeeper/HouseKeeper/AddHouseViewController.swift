@@ -63,7 +63,6 @@ class AddHouseViewController: PopUpViewController {
                 if success {
                     self.handleDismiss()
                     let json = JSON(response.data!)
-                    print(json)
                     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
                 } else {
                     print("Add house failed: " + response.result.value!)

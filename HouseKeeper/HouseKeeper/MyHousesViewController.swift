@@ -23,12 +23,13 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         NotificationCenter.default.addObserver(self, selector: #selector(MyHousesViewController.loadHouses), name: NSNotification.Name(rawValue: "loadHouses"), object: nil)
         
         // VC
-        title = "My Houses"
-        //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
-        tableView.addSubview(refreshControl)
+        title = "Houses"
         
         // Table View
+        refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+        tableView.contentInset.bottom = 44.0
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "house")
@@ -40,9 +41,11 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Bottom Toolbar
         let bottomToolbar = UIToolbar()
+        
         let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MyHousesViewController.addHouse))
         let cogButtonItem = UIBarButtonItem(image: UIImage(named: "Setting Cog"), style: .plain, target: self, action: #selector(MyHousesViewController.openSettings))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        
         bottomToolbar.setItems([cogButtonItem, flexibleSpace, addButtonItem], animated: false)
         view.addSubview(bottomToolbar)
         
@@ -53,6 +56,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Navigation bar
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+//        self.navigationItem.rightBarButtonItem?.tintColor = Style.redColor
     }
     
     func loadHouses() {
@@ -106,9 +110,9 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "house")
-        cell.textLabel!.text = houses[indexPath.row].address
-        cell.imageView?.image = UIImage(named: "Placeholder")
+        let cell = HouseTableViewCell(style: .default, reuseIdentifier: "house")
+        cell.titleLabel.text = houses[indexPath.row].address
+        cell.photoView.image = UIImage(named: "Placeholder")
         
         return cell
     }
@@ -119,11 +123,13 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let hid = houses[indexPath.row].hid
-        navigationController?.pushViewController(HouseViewController(hid: hid), animated: true)
+        let houseVC = HouseViewController(hid: hid)
+        houseVC.title = houses[indexPath.row].address
+        navigationController?.pushViewController(houseVC, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete) {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let headers = generateHeaders()
             let parameters: Parameters = ["hid": self.houses[indexPath.row].hid]
             Alamofire.request(Networking.baseURL + "/deleteHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
@@ -142,6 +148,12 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
                     }
             }
         }
+        
+        return [delete]
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 130
     }
 
     override func didReceiveMemoryWarning() {

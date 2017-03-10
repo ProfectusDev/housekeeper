@@ -14,6 +14,7 @@ class RootViewController: UINavigationController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
+        navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)]
     }
 
     override func didReceiveMemoryWarning() {
