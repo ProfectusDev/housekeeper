@@ -18,7 +18,7 @@ class LoginViewController: UserViewController {
         titleLabel.text = "Login"
         button.setTitle("Sign In", for: .normal)
         switchScreen.setTitle("Don't have an account?", for: .normal)
-        skip.setTitle("Skip sign in", for: .normal)
+//      skip.setTitle("Skip sign in", for: .normal)
         
         button.addTarget(self, action: #selector(LoginViewController.handleLogin), for: .touchUpInside)
     }

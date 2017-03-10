@@ -18,7 +18,7 @@ class RegistrationViewController: UserViewController {
         titleLabel.text = "Registration"
         button.setTitle("Sign Up", for: .normal)
         switchScreen.setTitle("Already have an account?", for: .normal)
-        skip.setTitle("Skip registration", for: .normal)
+//      skip.setTitle("Skip registration", for: .normal)
         
         button.addTarget(self, action: #selector(RegistrationViewController.handleRegistration), for: .touchUpInside)
     }
