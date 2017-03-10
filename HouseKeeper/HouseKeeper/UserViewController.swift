@@ -18,7 +18,7 @@ class UserViewController: UIViewController, UITextFieldDelegate {
     let password = TextField()
     let button = UIButton()
     let switchScreen = UIButton()
-    let skip = UIButton()
+    //let skip = UIButton()
     var keyboardHeight = CGFloat(200.0)
     
     override func viewDidLoad() {
@@ -68,11 +68,11 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         switchScreen.addTarget(self, action: #selector(UserViewController.handleSwitch), for: .touchUpInside)
         
         // skip
-        skip.setTitle("Skip", for: .normal)
-        skip.setTitleColor(Style.whiteColor, for: .normal)
-        skip.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-        skip.titleLabel?.textAlignment = .center
-        skip.addTarget(self, action: #selector(UserViewController.handleDismiss), for: .touchUpInside)
+//        skip.setTitle("Skip", for: .normal)
+//        skip.setTitleColor(Style.whiteColor, for: .normal)
+//        skip.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+//        skip.titleLabel?.textAlignment = .center
+//        skip.addTarget(self, action: #selector(UserViewController.handleDismiss), for: .touchUpInside)
         
         // insert subviews
         group.addSubview(titleLabel)
@@ -80,7 +80,7 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         group.addSubview(password)
         group.addSubview(button)
         group.addSubview(switchScreen)
-        view.addSubview(skip)
+//      view.addSubview(skip)
         wrapper.addSubview(group)
         view.addSubview(wrapper)
         
@@ -118,12 +118,12 @@ class UserViewController: UIViewController, UITextFieldDelegate {
             make.centerX.equalToSuperview()
         }
         
-        skip.snp.makeConstraints { (make) in
-            make.width.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottom).inset(20)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(17)
-        }
+//        skip.snp.makeConstraints { (make) in
+//            make.width.equalToSuperview()
+//            make.bottom.equalTo(view.snp.bottom).inset(20)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(17)
+//        }
         
         group.snp.makeConstraints { (make) in
             make.width.equalToSuperview().inset(40)
