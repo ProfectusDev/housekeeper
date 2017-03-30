@@ -20,6 +20,11 @@ enum Category: String {
     static let allValues = [location, price, amenities, interior, exterior, other]
 }
 
+enum DataType: String {
+    case binary
+    case ternary
+}
+
 class Criterion: CustomStringConvertible {
     var id: Int
     var name = ""
