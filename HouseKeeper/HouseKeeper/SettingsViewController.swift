@@ -11,7 +11,7 @@ import UIKit
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
-//    let dreamHouseVC =
+    let dreamHouseVC = DreamHouseViewController()
     
     override func loadView() {
         super.loadView()
@@ -49,9 +49,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             make.height.equalTo(64)
         }
         
-//        dreamHouseVC.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview()
-//        }
+        dreamHouseVC.view.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
     }
     
     func done() {
