@@ -34,7 +34,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Add Subviews
         view.addSubview(tableView)
         view.addSubview(navigationBar)
-//        view.addSubview(dreamHouseVC)
+        view.addSubview(dreamHouseVC.view)
         
         // Layout
         tableView.snp.makeConstraints { (make) in
@@ -50,7 +50,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         dreamHouseVC.view.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
+            make.top.equalTo(navigationBar.snp.bottom)
+            make.width.equalToSuperview()
+            make.bottom.equalTo(0)
         }
     }
     
