@@ -34,6 +34,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "criterion")
+        tableView.backgroundColor = Style.whiteColor
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints { (make) in
@@ -81,29 +82,44 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // Rows
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
-        if indexPath.row < criteria[indexPath.section].count {
+        if isCriteriaRow(at: indexPath) {
             cell = CriterionTableViewCell(style: .default, reuseIdentifier: "criterion")
+            cell.textLabel?.textColor = Style.redColor
+            cell.selectionStyle = .none
             cell.textLabel!.text = criteria[indexPath.section][indexPath.row].name
+            let type = criteria[indexPath.section][indexPath.row].type
+            if type == .binary {
+                cell.accessoryView = BinaryCriteriaSelector()
+            } else if type == .ternary {
+                cell.accessoryView = TernaryCriteriaSelector()
+            }
         } else {
             cell = AddCriterionTableViewCell(style: .default, reuseIdentifier: "criterion")
+            cell.textLabel?.textColor = Style.grayColor
             cell.textLabel!.text = "Add Criterion"
         }
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return isCriteriaRow(at: indexPath)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 45
+        return Style.rowHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row < criteria[indexPath.section].count {
+        if isCriteriaRow(at: indexPath) {
             // nothing
         } else {
             let modal = AddCriterionViewController()
             modal.hid = hid
             modal.modalPresentationStyle = .overCurrentContext
-            present(modal, animated: true, completion: nil)
+            present(modal, animated: true, completion: {
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            })
             NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "blur")))
         }
     }
@@ -126,6 +142,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         header.textLabel?.font = UIFont.systemFont(ofSize: 24.0, weight: UIFontWeightHeavy)
         header.textLabel?.textColor = Style.blackColor
         header.contentView.backgroundColor = Style.whiteColor
+        header.layer.zPosition = 0
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -161,6 +178,32 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         return [delete]
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+//        return isCriteriaRow(at: indexPath)
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let rowToMove = criteria[sourceIndexPath.section][sourceIndexPath.row]
+        criteria[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+        criteria[destinationIndexPath.section].insert(rowToMove, at: destinationIndexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if sourceIndexPath.section != proposedDestinationIndexPath.section {
+            return sourceIndexPath
+        }
+        if proposedDestinationIndexPath.row >= criteria[proposedDestinationIndexPath.section].count {
+            return sourceIndexPath
+        }
+        return proposedDestinationIndexPath
+    }
+    
+    // Utility
+    func isCriteriaRow(at indexPath: IndexPath) -> Bool {
+        return indexPath.row < criteria[indexPath.section].count
     }
     
     override func didReceiveMemoryWarning() {

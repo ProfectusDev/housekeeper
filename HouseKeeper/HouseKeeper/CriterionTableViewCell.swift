@@ -13,7 +13,6 @@ class CriterionTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        textLabel?.textColor = Style.redColor
     }
     
     required init?(coder aDecoder: NSCoder) {
