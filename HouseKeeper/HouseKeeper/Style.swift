@@ -21,4 +21,5 @@ struct Style {
     static var screenWidth = CGFloat(0)
     static var screenHeight = CGFloat(0)
     static let buttonRadius = CGFloat(10)
+    static let rowHeight = CGFloat(45)
 }

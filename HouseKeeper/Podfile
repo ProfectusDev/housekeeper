@@ -7,4 +7,5 @@ target "HouseKeeper" do
   pod 'Alamofire', '~> 4.3'
   pod 'JSONWebToken'
   pod 'SwiftyJSON'
+  pod 'FontAwesome.swift'
 end
