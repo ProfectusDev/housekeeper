@@ -11,7 +11,7 @@ import UIKit
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
-//    let dreamHouseVC =
+    let dreamHouseVC = DreamHouseViewController()
     
     override func loadView() {
         super.loadView()
@@ -34,7 +34,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Add Subviews
         view.addSubview(tableView)
         view.addSubview(navigationBar)
-//        view.addSubview(dreamHouseVC)
+        view.addSubview(dreamHouseVC.view)
         
         // Layout
         tableView.snp.makeConstraints { (make) in
@@ -49,9 +49,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             make.height.equalTo(64)
         }
         
-//        dreamHouseVC.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview()
-//        }
+        dreamHouseVC.view.snp.makeConstraints { (make) in
+            make.top.equalTo(navigationBar.snp.bottom)
+            make.width.equalToSuperview()
+            make.bottom.equalTo(0)
+        }
     }
     
     func done() {
