@@ -22,6 +22,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Top Toolbar
         let navigationBar = UINavigationBar()
         
+        // 'title' set to "Dream House" for Demo purposes
+        // TO-DO: 
+        //   1.  Move 'Dream House' Template to its own menu item
+        //   2.  Revert navigationItem 'title' element to 'Settings'
         let navigationItem = UINavigationItem(title: "Settings")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
         navigationBar.setItems([navigationItem], animated: false)

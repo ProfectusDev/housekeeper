@@ -18,16 +18,15 @@ class DreamHouseViewController: HouseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Attach text to title object
-        viewTitle.text = "My Dream House"
+        // Attach text to viewTitle object
+        viewTitle.text = "My Dream House"        
         
         // Add to subview
         view.addSubview(viewTitle)
         
-        viewTitle.snp_makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.bottom.equalTo(20)
+        viewTitle.snp.makeConstraints { make in
+            make.top.equalTo(3)
+            make.centerX.equalToSuperview()
         }
     }
 }
