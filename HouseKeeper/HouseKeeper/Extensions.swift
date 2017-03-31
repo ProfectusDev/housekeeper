@@ -8,8 +8,9 @@
 
 import UIKit
 
+// Extention of the base of classes. A way to customize existing frameworks within swift
 @IBDesignable class RoundRectView: UIView {
-    
+
     @IBInspectable var cornerRadius: CGFloat = 0.0
     @IBInspectable var borderColor: UIColor = UIColor.black
     @IBInspectable var borderWidth: CGFloat = 0.5
@@ -20,7 +21,7 @@ import UIKit
             super.backgroundColor = UIColor.clear
         }
     }
-    
+
     func setup() {
         layer.shadowColor = UIColor.black.cgColor;
         layer.shadowOffset = CGSize.zero
@@ -28,46 +29,46 @@ import UIKit
         layer.shadowOpacity = 0.5;
         super.backgroundColor = UIColor.clear
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setup()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setup()
     }
-    
+
     override func draw(_ rect: CGRect) {
         customBackgroundColor.setFill()
         UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).fill()
-        
+
         let borderRect = bounds.insetBy(dx: borderWidth/2, dy: borderWidth/2)
         let borderPath = UIBezierPath(roundedRect: borderRect, cornerRadius: cornerRadius - borderWidth/2)
         borderColor.setStroke()
         borderPath.lineWidth = borderWidth
         borderPath.stroke()
-        
+
         // whatever else you need drawn
     }
 }
 
 extension UIView {
-    
+
     /**
      Rounds the given set of corners to the specified radius
-     
+
      - parameter corners: Corners to round
      - parameter radius:  Radius to round to
      */
     func round(corners: UIRectCorner, radius: CGFloat) {
         _round(corners: corners, radius: radius)
     }
-    
+
     /**
      Rounds the given set of corners to the specified radius with a border
-     
+
      - parameter corners:     Corners to round
      - parameter radius:      Radius to round to
      - parameter borderColor: The border color
@@ -77,10 +78,10 @@ extension UIView {
         let mask = _round(corners: corners, radius: radius)
         addBorder(mask: mask, borderColor: borderColor, borderWidth: borderWidth)
     }
-    
+
     /**
      Fully rounds an autolayout view (e.g. one with no known frame) with the given diameter and border
-     
+
      - parameter diameter:    The view's diameter
      - parameter borderColor: The border color
      - parameter borderWidth: The border width
@@ -91,11 +92,11 @@ extension UIView {
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor.cgColor;
     }
-    
+
 }
 
 private extension UIView {
-    
+
     @discardableResult func _round(corners: UIRectCorner, radius: CGFloat) -> CAShapeLayer {
         let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
@@ -103,7 +104,7 @@ private extension UIView {
         self.layer.mask = mask
         return mask
     }
-    
+
     func addBorder(mask: CAShapeLayer, borderColor: UIColor, borderWidth: CGFloat) {
         let borderLayer = CAShapeLayer()
         borderLayer.path = mask.path
@@ -113,7 +114,7 @@ private extension UIView {
         borderLayer.frame = bounds
         layer.addSublayer(borderLayer)
     }
-    
+
 }
 
 extension UIViewController {

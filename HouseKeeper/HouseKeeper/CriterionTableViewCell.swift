@@ -8,14 +8,15 @@
 
 import UIKit
 
+// This class contains the criterion table 
 class CriterionTableViewCell: UITableViewCell {
-    
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         textLabel?.textColor = Style.redColor
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

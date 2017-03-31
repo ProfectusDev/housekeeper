@@ -10,19 +10,21 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
+
+// The UI elements and functionality of the user registration page
 class RegistrationViewController: UserViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         titleLabel.text = "Registration"
         button.setTitle("Sign Up", for: .normal)
         switchScreen.setTitle("Already have an account?", for: .normal)
 //      skip.setTitle("Skip registration", for: .normal)
-        
+
         button.addTarget(self, action: #selector(RegistrationViewController.handleRegistration), for: .touchUpInside)
     }
-    
+
     func handleRegistration() {
         if !isValidEmail(emailString: email.text!) {
             alert(title: "Registration Failed", message: "Invalid email.")
@@ -47,18 +49,18 @@ class RegistrationViewController: UserViewController {
             }
         }
     }
-    
+
     override func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         _ = super.textFieldShouldReturn(textField)
         handleRegistration()
         return false
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
 
     /*
     // MARK: - Navigation

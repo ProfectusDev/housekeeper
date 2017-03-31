@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 
+// Helper functions to perform networking calls
 struct Networking {
     static let baseURL = "http://45.55.183.86:8081/api"
     static var token = ""

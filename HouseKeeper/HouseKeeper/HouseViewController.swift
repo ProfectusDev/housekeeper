@@ -11,12 +11,14 @@ import SnapKit
 import Alamofire
 import SwiftyJSON
 
+
+// This class contains the UI elements and the underlying functionality for the house profile
 class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+
     var hid = 0
     var criteria = Array(repeating: [Criterion](), count: Category.allValues.count)
     let tableView = UITableView()
-    
+
     convenience init(hid: Int) {
         self.init()
         self.hid = hid
@@ -24,29 +26,29 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     override func loadView() {
         super.loadView()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.loadCriteria), name: NSNotification.Name(rawValue: "loadCriteria"), object: nil)
-        
+
         // VC
         view.backgroundColor = UIColor.white
-        
+
         // Table View
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "criterion")
         view.addSubview(tableView)
-        
+
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        
+
         // Navigation Bar
         navigationItem.rightBarButtonItem = editButtonItem
-        
+
         // Networking
         loadCriteria()
     }
-    
+
     // Networking
     func loadCriteria() {
         if (Networking.token == "" || hid == 0) {
@@ -77,7 +79,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
         }
     }
-    
+
     // Rows
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
@@ -88,14 +90,14 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell = AddCriterionTableViewCell(style: .default, reuseIdentifier: "criterion")
             cell.textLabel!.text = "Add Criterion"
         }
-        
+
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row < criteria[indexPath.section].count {
             // nothing
@@ -107,37 +109,37 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
             NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "blur")))
         }
     }
-    
+
     // Sections
     func numberOfSections(in tableView: UITableView) -> Int {
         return criteria.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return criteria[section].count + 1
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return Category.allValues[section].rawValue.capitalized
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont.systemFont(ofSize: 24.0, weight: UIFontWeightHeavy)
         header.textLabel?.textColor = Style.blackColor
         header.contentView.backgroundColor = Style.whiteColor
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
-    
+
     // Editing
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         self.tableView.setEditing(editing, animated: animated)
     }
-    
+
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let id = self.criteria[indexPath.section][indexPath.row].id
@@ -159,10 +161,10 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     }
             }
         }
-        
+
         return [delete]
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
