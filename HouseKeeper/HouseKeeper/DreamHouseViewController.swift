@@ -13,21 +13,17 @@ import SwiftyJSON
 
 class DreamHouseViewController: HouseViewController {
     
-    let viewTitle = UILabel()
+    override init(house: House) {
+        super.init(house: house)
+        title = "Dream House"
+    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        super.loadView()
         
-        // Attach text to title object
-        viewTitle.text = "My Dream House"
-        
-        // Add to subview
-        view.addSubview(viewTitle)
-        
-        viewTitle.snp_makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.bottom.equalTo(20)
-        }
     }
 }

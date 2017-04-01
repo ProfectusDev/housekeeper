@@ -12,6 +12,7 @@ import Alamofire
 class AddCriterionViewController: PopUpViewController {
     
     var hid = 0
+    var category = Category.other
     let name = TextField()
     
     override func viewDidLoad() {
@@ -47,7 +48,7 @@ class AddCriterionViewController: PopUpViewController {
             return
         }
         let headers = generateHeaders()
-        let parameters: Parameters = ["hid": hid, "name": name.text!]
+        let parameters: Parameters = ["hid": hid, "name": name.text!, "category": category.rawValue]
         Alamofire.request(Networking.baseURL + "/addCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 if (response.error != nil) {

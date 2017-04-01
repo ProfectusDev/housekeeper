@@ -11,11 +11,14 @@ import SnapKit
 import Alamofire
 import SwiftyJSON
 
-class MyHousesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MyHousesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
     var houses: [House] = []
+    var filteredHouses: [House] = []
     let tableView = UITableView()
     let refreshControl = UIRefreshControl()
+    let searchController = UISearchController(searchResultsController: nil)
+    let settingsNavigationController = UINavigationController(rootViewController: SettingsViewController())
     
     override func loadView() {
         super.loadView()
@@ -39,6 +42,12 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
             make.edges.equalToSuperview()
         }
         
+        // Search Bar
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        
         // Bottom Toolbar
         let bottomToolbar = UIToolbar()
         
@@ -56,7 +65,13 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Navigation bar
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-//        self.navigationItem.rightBarButtonItem?.tintColor = Style.redColor
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        houses.sort { (houseA, houseB) -> Bool in
+            return houseA.rank > houseB.rank
+        }
+        tableView.reloadData()
     }
     
     func loadHouses() {
@@ -102,7 +117,23 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func openSettings() {
-        present(SettingsViewController(), animated: true, completion: nil)
+        present(settingsNavigationController, animated: true, completion: nil)
+    }
+    
+    func closeSettings() {
+        
+    }
+    
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        filteredHouses = houses.filter { house in
+            return house.address.lowercased().contains(searchText.lowercased())
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -112,19 +143,27 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = HouseTableViewCell(style: .default, reuseIdentifier: "house")
-        cell.titleLabel.text = houses[indexPath.row].address
         cell.photoView.image = UIImage(named: "Placeholder")
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            cell.titleLabel.text = filteredHouses[indexPath.row].address
+        } else {
+            cell.titleLabel.text = houses[indexPath.row].address
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return filteredHouses.count
+        }
         return houses.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let hid = houses[indexPath.row].hid
-        let houseVC = HouseViewController(hid: hid)
+        let house = houses[indexPath.row]
+        let houseVC = HouseViewController(house: house)
         houseVC.title = houses[indexPath.row].address
         navigationController?.pushViewController(houseVC, animated: true)
     }

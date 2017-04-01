@@ -13,19 +13,28 @@ import SwiftyJSON
 
 class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var hid = 0
+    var house: House
+    var hid: Int
     var criteria = Array(repeating: [Criterion](), count: Category.allValues.count)
     let tableView = UITableView()
     
-    convenience init(hid: Int) {
-        self.init()
-        self.hid = hid
+    init(house: House) {
+        self.house = house
+        hid = house.hid
+        super.init(nibName: nil, bundle: nil)
+        updateRank()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func loadView() {
         super.loadView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.loadCriteria), name: NSNotification.Name(rawValue: "loadCriteria"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.criteriaSelectorChanged), name: NSNotification.Name(rawValue: "radioChanged"), object: nil)
         
         // VC
         view.backgroundColor = UIColor.white
@@ -88,11 +97,14 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell.selectionStyle = .none
             cell.textLabel!.text = criteria[indexPath.section][indexPath.row].name
             let type = criteria[indexPath.section][indexPath.row].type
+            var criteriaSelector = CriteriaSelector()
             if type == .binary {
-                cell.accessoryView = BinaryCriteriaSelector()
+                criteriaSelector = BinaryCriteriaSelector()
             } else if type == .ternary {
-                cell.accessoryView = TernaryCriteriaSelector()
+                criteriaSelector = TernaryCriteriaSelector()
             }
+            criteriaSelector.value = criteria[indexPath.section][indexPath.row].value
+            cell.accessoryView = criteriaSelector
         } else {
             cell = AddCriterionTableViewCell(style: .default, reuseIdentifier: "criterion")
             cell.textLabel?.textColor = Style.grayColor
@@ -111,17 +123,57 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isCriteriaRow(at: indexPath) {
-            // nothing
-        } else {
+        if !isCriteriaRow(at: indexPath) {
             let modal = AddCriterionViewController()
             modal.hid = hid
+            modal.category = Category.allValues[indexPath.section]
             modal.modalPresentationStyle = .overCurrentContext
             present(modal, animated: true, completion: {
                 self.tableView.deselectRow(at: indexPath, animated: true)
             })
             NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "blur")))
         }
+    }
+    
+    func criteriaSelectorChanged(notification: Notification) {
+        let radio = notification.object as! RadioButton
+        let criteriaSelector = radio.superview as! CriteriaSelector
+        let cell = criteriaSelector.superview as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        criteria[indexPath.section][indexPath.row].value = criteriaSelector.value
+        handleCriteriaUpdate(indexPath: indexPath)
+        updateRank()
+    }
+    
+    func handleCriteriaUpdate(indexPath: IndexPath) {
+        if Networking.token == "" && hid == 0 {
+            return
+        }
+        let id = self.criteria[indexPath.section][indexPath.row].id
+        let value = self.criteria[indexPath.section][indexPath.row].value
+        let headers = generateHeaders()
+        let parameters: Parameters = ["hid": hid, "id": id, "value": value]
+        Alamofire.request(Networking.baseURL + "/updateCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .responseString { response in
+                if (response.error != nil) {
+                    print("Update criterion failed: " + (response.error?.localizedDescription)!)
+                    return
+                }
+                let success = validate(statusCode: (response.response?.statusCode)!)
+                if !success {
+                    print("Update criterion failed: " + response.result.value!)
+                }
+        }
+    }
+    
+    func updateRank() {
+        var rank = 0.0
+        for section in criteria {
+            for criterion in section {
+                rank += Double(criterion.value)
+            }
+        }
+        house.rank = rank
     }
     
     // Sections
@@ -160,7 +212,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let id = self.criteria[indexPath.section][indexPath.row].id
             let headers = generateHeaders()
             let parameters: Parameters = ["id": id, "hid": self.hid]
-            Alamofire.request(Networking.baseURL + "/deleteCriteria", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            Alamofire.request(Networking.baseURL + "/deleteCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseString { response in
                     if (response.error != nil) {
                         print("Delete criteria failed: " + (response.error?.localizedDescription)!)

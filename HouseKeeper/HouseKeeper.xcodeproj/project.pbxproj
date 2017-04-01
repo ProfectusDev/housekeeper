@@ -118,7 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				DC0B53F81DD3AF5800DC1795 /* HouseViewController.swift */,
-				381F0C031E8DB6CE00D6E2B7 /* DreamHouseViewController.swift */,
 				DC4F91B21E71058D008302F5 /* CriterionTableViewCell.swift */,
 				DC4F91B41E728916008302F5 /* AddCriterionTableViewCell.swift */,
 				DC4F91B61E731765008302F5 /* AddCriterionViewController.swift */,
@@ -130,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				DC0B53FA1DD3AF6200DC1795 /* SettingsViewController.swift */,
+				381F0C031E8DB6CE00D6E2B7 /* DreamHouseViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";

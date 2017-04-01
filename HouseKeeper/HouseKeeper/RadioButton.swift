@@ -76,6 +76,7 @@ class RadioButton: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         selected = !selected
+        NotificationCenter.default.post(name: NSNotification.Name("radioChanged"), object: self)
     }
     
     func setSelected(selected: Bool) {
@@ -84,7 +85,6 @@ class RadioButton: UIView {
             changeIconColor(color: Style.whiteColor)
         } else {
             innerCircleLayer.fillColor = UIColor.clear.cgColor
-
             changeIconColor(color: Style.redColor)
         }
     }

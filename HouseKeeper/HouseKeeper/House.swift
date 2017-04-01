@@ -11,6 +11,7 @@ import UIKit
 class House {
     var hid: Int
     var address: String
+    var rank = 0.0
     var image: UIImage
     
     public var description: String { return "\(address)" }

@@ -10,66 +10,66 @@ import UIKit
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let tableView = UITableView()
-    let dreamHouseVC = DreamHouseViewController()
+    let tableView = UITableView(frame: CGRect.zero, style: .grouped)
+    var settingsViewControllers: [[UIViewController]] = []
+    
+    let sectionTitles = [
+        "Dream House",
+        "User"
+    ]
     
     override func loadView() {
         super.loadView()
-
+        
+        title = "Settings"
         view.backgroundColor = UIColor.white
-        
-        
-        // Top Toolbar
-        let navigationBar = UINavigationBar()
-        
-        let navigationItem = UINavigationItem(title: "Settings")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
-        navigationBar.setItems([navigationItem], animated: false)
         
         // Table View
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
+        // View Controllers
+        let dreamHouseVC = DreamHouseViewController(house: House(hid: 0, address: "Dream House"))
+        settingsViewControllers.append([dreamHouseVC])
+        
         // Add Subviews
         view.addSubview(tableView)
-        view.addSubview(navigationBar)
-        view.addSubview(dreamHouseVC.view)
         
         // Layout
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(navigationBar.snp.bottom)
-            make.width.equalToSuperview()
-            make.bottom.equalTo(0)
-        }
-        
-        navigationBar.snp.makeConstraints { (make) in
             make.top.equalTo(0)
-            make.width.equalToSuperview()
-            make.height.equalTo(64)
-        }
-        
-        dreamHouseVC.view.snp.makeConstraints { (make) in
-            make.top.equalTo(navigationBar.snp.bottom)
             make.width.equalToSuperview()
             make.bottom.equalTo(0)
         }
     }
     
     func done() {
-        dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = settingsViewControllers[indexPath.section][indexPath.row].title
+        return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return settingsViewControllers.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return settingsViewControllers[section].count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewController = settingsViewControllers[indexPath.section][indexPath.row]
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
