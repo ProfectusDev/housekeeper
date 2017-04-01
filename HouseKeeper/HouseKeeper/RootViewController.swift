@@ -37,16 +37,6 @@ class RootViewController: UINavigationController {
     }
 
     func unBlur() {
-//        UIView.animate(withDuration: 0.3) {
-//            self.blurEffectView.effect = nil
-//        }
-//
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.blurEffectView.effect = nil
-//        }, completion: {
-//            blurEffectView.isHidden
-//        })
-
         UIView.animate(withDuration: 0.3, animations: {
             self.blurEffectView.effect = nil
         }, completion: { (complete: Bool) in

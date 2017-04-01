@@ -12,6 +12,11 @@ import UIKit
 class House {
     var hid: Int
     var address: String
+    var criteria: [[Criterion]] = Array(repeatElement([Criterion](), count: Category.allValues.count)) {
+        didSet {
+            calculateRank()
+        }
+    }
     var rank = 0.0
     var image: UIImage
 
@@ -22,5 +27,13 @@ class House {
         self.hid = hid
         image = UIImage()
     }
-
+    
+    func calculateRank() {
+        rank = 0.0
+        for section in criteria {
+            for criterion in section {
+                rank += Double(criterion.value)
+            }
+        }
+    }
 }

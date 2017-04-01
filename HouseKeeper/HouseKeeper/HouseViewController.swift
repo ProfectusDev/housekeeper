@@ -14,15 +14,11 @@ import SwiftyJSON
 class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var house: House
-    var hid: Int
-    var criteria = Array(repeating: [Criterion](), count: Category.allValues.count)
     let tableView = UITableView()
     
     init(house: House) {
         self.house = house
-        hid = house.hid
         super.init(nibName: nil, bundle: nil)
-        updateRank()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -59,11 +55,11 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     // Networking
     func loadCriteria() {
-        if (Networking.token == "" || hid == 0) {
+        if (Networking.token == "" || house.hid == 0) {
             return
         }
         let headers = generateHeaders()
-        let parameters: Parameters = ["hid": hid]
+        let parameters: Parameters = ["hid": house.hid]
         Alamofire.request(Networking.baseURL + "/getCriteria", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 if (response.error != nil) {
@@ -72,14 +68,14 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
                 let success = validate(statusCode: (response.response?.statusCode)!)
                 if success {
-                    for section in 0..<self.criteria.count {
-                        self.criteria[section].removeAll()
+                    for section in 0..<self.house.criteria.count {
+                        self.house.criteria[section].removeAll()
                     }
                     let json = JSON(response.data!).arrayValue
                     for criterionData in json {
                         let criterion = Criterion.decodeJSON(data: criterionData.dictionaryValue)
                         let category = criterion.category
-                        self.criteria[Category.allValues.index(of: category)!].append(criterion)
+                        self.house.criteria[Category.allValues.index(of: category)!].append(criterion)
                     }
                     self.tableView.reloadData()
                 } else {
@@ -95,15 +91,15 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell = CriterionTableViewCell(style: .default, reuseIdentifier: "criterion")
             cell.textLabel?.textColor = Style.redColor
             cell.selectionStyle = .none
-            cell.textLabel!.text = criteria[indexPath.section][indexPath.row].name
-            let type = criteria[indexPath.section][indexPath.row].type
+            cell.textLabel!.text = house.criteria[indexPath.section][indexPath.row].name
+            let type = house.criteria[indexPath.section][indexPath.row].type
             var criteriaSelector = CriteriaSelector()
             if type == .binary {
                 criteriaSelector = BinaryCriteriaSelector()
             } else if type == .ternary {
                 criteriaSelector = TernaryCriteriaSelector()
             }
-            criteriaSelector.value = criteria[indexPath.section][indexPath.row].value
+            criteriaSelector.value = house.criteria[indexPath.section][indexPath.row].value
             cell.accessoryView = criteriaSelector
         } else {
             cell = AddCriterionTableViewCell(style: .default, reuseIdentifier: "criterion")
@@ -125,7 +121,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !isCriteriaRow(at: indexPath) {
             let modal = AddCriterionViewController()
-            modal.hid = hid
+            modal.hid = house.hid
             modal.category = Category.allValues[indexPath.section]
             modal.modalPresentationStyle = .overCurrentContext
             present(modal, animated: true, completion: {
@@ -140,19 +136,18 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let criteriaSelector = radio.superview as! CriteriaSelector
         let cell = criteriaSelector.superview as! UITableViewCell
         let indexPath = tableView.indexPath(for: cell)!
-        criteria[indexPath.section][indexPath.row].value = criteriaSelector.value
+        house.criteria[indexPath.section][indexPath.row].value = criteriaSelector.value
         handleCriteriaUpdate(indexPath: indexPath)
-        updateRank()
     }
     
     func handleCriteriaUpdate(indexPath: IndexPath) {
-        if Networking.token == "" && hid == 0 {
+        if Networking.token == "" && house.hid == 0 {
             return
         }
-        let id = self.criteria[indexPath.section][indexPath.row].id
-        let value = self.criteria[indexPath.section][indexPath.row].value
+        let id = self.house.criteria[indexPath.section][indexPath.row].id
+        let value = self.house.criteria[indexPath.section][indexPath.row].value
         let headers = generateHeaders()
-        let parameters: Parameters = ["hid": hid, "id": id, "value": value]
+        let parameters: Parameters = ["hid": house.hid, "id": id, "value": value]
         Alamofire.request(Networking.baseURL + "/updateCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 if (response.error != nil) {
@@ -166,23 +161,13 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func updateRank() {
-        var rank = 0.0
-        for section in criteria {
-            for criterion in section {
-                rank += Double(criterion.value)
-            }
-        }
-        house.rank = rank
-    }
-    
     // Sections
     func numberOfSections(in tableView: UITableView) -> Int {
-        return criteria.count
+        return house.criteria.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return criteria[section].count + 1
+        return house.criteria[section].count + 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -209,9 +194,9 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            let id = self.criteria[indexPath.section][indexPath.row].id
+            let id = self.house.criteria[indexPath.section][indexPath.row].id
             let headers = generateHeaders()
-            let parameters: Parameters = ["id": id, "hid": self.hid]
+            let parameters: Parameters = ["id": id, "hid": self.house.hid]
             Alamofire.request(Networking.baseURL + "/deleteCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseString { response in
                     if (response.error != nil) {
@@ -220,7 +205,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     }
                     let success = validate(statusCode: (response.response?.statusCode)!)
                     if success {
-                        self.criteria[indexPath.section].remove(at: indexPath.row)
+                        self.house.criteria[indexPath.section].remove(at: indexPath.row)
                         self.tableView.reloadData()
                     } else {
                         // self.alert(title: "Registration Failed", message: response.result.value!)
@@ -238,16 +223,16 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let rowToMove = criteria[sourceIndexPath.section][sourceIndexPath.row]
-        criteria[sourceIndexPath.section].remove(at: sourceIndexPath.row)
-        criteria[destinationIndexPath.section].insert(rowToMove, at: destinationIndexPath.row)
+        let rowToMove = house.criteria[sourceIndexPath.section][sourceIndexPath.row]
+        house.criteria[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+        house.criteria[destinationIndexPath.section].insert(rowToMove, at: destinationIndexPath.row)
     }
     
     func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
             return sourceIndexPath
         }
-        if proposedDestinationIndexPath.row >= criteria[proposedDestinationIndexPath.section].count {
+        if proposedDestinationIndexPath.row >= house.criteria[proposedDestinationIndexPath.section].count {
             return sourceIndexPath
         }
         return proposedDestinationIndexPath
@@ -255,7 +240,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     // Utility
     func isCriteriaRow(at indexPath: IndexPath) -> Bool {
-        return indexPath.row < criteria[indexPath.section].count
+        return indexPath.row < house.criteria[indexPath.section].count
     }
     
     override func didReceiveMemoryWarning() {

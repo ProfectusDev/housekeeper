@@ -22,11 +22,19 @@ enum Category: String {
     static let allValues = [location, price, amenities, interior, exterior, other]
 }
 
+enum DataType: String {
+    case binary
+    case ternary
+}
+
+
 class Criterion: CustomStringConvertible {
     var id: Int
     var name = ""
     var category = Category.other
     var value = 0
+    var type = DataType.binary
+
 
     public var description: String { return name }
 
@@ -38,13 +46,15 @@ class Criterion: CustomStringConvertible {
         let id = data["id"]?.intValue
         let name = data["name"]?.stringValue
         let category = data["category"]?.stringValue
-//        let type = data["type"]?.intValue
+        let type = data["data type"]?.stringValue
         let value = data["value"]?.intValue
 
         let criterion = Criterion(id: id!)
         criterion.name = name!
         criterion.category = Category(rawValue: category!)!
         criterion.value = value!
+        criterion.type = DataType(rawValue: type!)!
+
 
         return criterion
     }

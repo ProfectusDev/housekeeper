@@ -15,6 +15,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     var houses: [House] = []
     var filteredHouses: [House] = []
+    let dreamHouse = House(hid: 0, address: "")
     let tableView = UITableView()
     let refreshControl = UIRefreshControl()
     let searchController = UISearchController(searchResultsController: nil)
@@ -45,7 +46,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         // Search Bar
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
+        definesPresentationContext = false
         tableView.tableHeaderView = searchController.searchBar
         
         // Bottom Toolbar
@@ -118,10 +119,6 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func openSettings() {
         present(settingsNavigationController, animated: true, completion: nil)
-    }
-    
-    func closeSettings() {
-        
     }
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {

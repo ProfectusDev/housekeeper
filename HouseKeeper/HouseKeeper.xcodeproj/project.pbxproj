@@ -25,6 +25,7 @@
 		DC4F91B51E728916008302F5 /* AddCriterionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F91B41E728916008302F5 /* AddCriterionTableViewCell.swift */; };
 		DC4F91B71E731765008302F5 /* AddCriterionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F91B61E731765008302F5 /* AddCriterionViewController.swift */; };
 		DC54BF481E8E161D00343A03 /* TernaryCriteriaSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC54BF471E8E161D00343A03 /* TernaryCriteriaSelector.swift */; };
+		DC54BF4A1E8F94CF00343A03 /* DreamHouse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC54BF491E8F94CF00343A03 /* DreamHouse.swift */; };
 		DC71DD5F1E3BF79B0075DC0C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC71DD5E1E3BF79B0075DC0C /* Networking.swift */; };
 		DC72A2C71DDF8D56009421E0 /* HouseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC72A2C61DDF8D56009421E0 /* HouseTableViewCell.swift */; };
 		DC9CF5E01E39164800CEC7DD /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9CF5DF1E39164800CEC7DD /* UserViewController.swift */; };
@@ -58,6 +59,7 @@
 		DC4F91B41E728916008302F5 /* AddCriterionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCriterionTableViewCell.swift; sourceTree = "<group>"; };
 		DC4F91B61E731765008302F5 /* AddCriterionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCriterionViewController.swift; sourceTree = "<group>"; };
 		DC54BF471E8E161D00343A03 /* TernaryCriteriaSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TernaryCriteriaSelector.swift; sourceTree = "<group>"; };
+		DC54BF491E8F94CF00343A03 /* DreamHouse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamHouse.swift; sourceTree = "<group>"; };
 		DC71DD5E1E3BF79B0075DC0C /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		DC72A2C61DDF8D56009421E0 /* HouseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HouseTableViewCell.swift; sourceTree = "<group>"; };
 		DC9CF5DF1E39164800CEC7DD /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				DC11A8BD1DD6794700E49EB0 /* House.swift */,
+				DC54BF491E8F94CF00343A03 /* DreamHouse.swift */,
 				DC11A8BF1DD6795400E49EB0 /* Criterion.swift */,
 			);
 			name = Model;
@@ -350,6 +353,7 @@
 				DC0B53F31DD3AE6800DC1795 /* RegistrationViewController.swift in Sources */,
 				DCE94F491DD10B57002FB232 /* AppDelegate.swift in Sources */,
 				DC0B53FD1DD3B0A200DC1795 /* Style.swift in Sources */,
+				DC54BF4A1E8F94CF00343A03 /* DreamHouse.swift in Sources */,
 				DC0B53FB1DD3AF6200DC1795 /* SettingsViewController.swift in Sources */,
 				DC72A2C71DDF8D56009421E0 /* HouseTableViewCell.swift in Sources */,
 			);
