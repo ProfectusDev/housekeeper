@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
+// Contains the UI elements and underlying funtionality for logging in
 class LoginViewController: UserViewController {
 
     override func viewDidLoad() {
@@ -19,10 +20,10 @@ class LoginViewController: UserViewController {
         button.setTitle("Sign In", for: .normal)
         switchScreen.setTitle("Don't have an account?", for: .normal)
 //      skip.setTitle("Skip sign in", for: .normal)
-        
+
         button.addTarget(self, action: #selector(LoginViewController.handleLogin), for: .touchUpInside)
     }
-    
+
     func handleLogin() {
         if !isValidEmail(emailString: email.text!) {
             alert(title: "Login Failed", message: "Invalid email.")
@@ -57,7 +58,7 @@ class LoginViewController: UserViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
 
     /*
     // MARK: - Navigation

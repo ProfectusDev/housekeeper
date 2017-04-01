@@ -9,29 +9,30 @@
 import UIKit
 import Alamofire
 
+// Functionality for adding custom criterion
 class AddCriterionViewController: PopUpViewController {
-    
+
     var hid = 0
     var category = Category.other
     let name = TextField()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // title
         titleLabel.text = "Add Criterion"
-        
+
         // address
         name.placeholder = "Name"
         name.layer.borderColor = Style.redColor.cgColor
         name.delegate = self
-        
+
         // submit
         submit.addTarget(self, action: #selector(AddCriterionViewController.handleAddCriterion), for: .touchUpInside)
-        
+
         // add subviews
         view.addSubview(name)
-        
+
         // make constraints
         name.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
@@ -42,7 +43,7 @@ class AddCriterionViewController: PopUpViewController {
         }
 
     }
-    
+
     func handleAddCriterion() {
         if Networking.token == "" && hid == 0 {
             return
@@ -69,7 +70,7 @@ class AddCriterionViewController: PopUpViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
 
     /*
     // MARK: - Navigation

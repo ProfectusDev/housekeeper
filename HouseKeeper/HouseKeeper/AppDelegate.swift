@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
+// The main file that runs everything
 struct defaultsKeys {
     static let email = "email"
     static let password = "password"
@@ -23,22 +24,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+
         let myHousesVC = MyHousesViewController()
         let rootVC = RootViewController(rootViewController: myHousesVC)
-        
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = rootVC
         window?.tintColor = Style.redColor
         window?.makeKeyAndVisible()
-        
+
         Style.screenWidth = UIScreen.main.bounds.size.width
         Style.screenHeight = UIScreen.main.bounds.size.height
-        
+
         let defaults = UserDefaults.standard
         let email = defaults.string(forKey: defaultsKeys.email)
         let password = defaults.string(forKey: defaultsKeys.password)
-        
+
         if ((email != nil) && (password != nil)) {
             let parameters: Parameters = ["email": email!, "password": password!]
             Alamofire.request(Networking.baseURL + "/login", method: .post, parameters: parameters, encoding: JSONEncoding.default)
@@ -57,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             launchLoginVC(rootVC: rootVC)
         }
-        
+
         return true
     }
 
@@ -82,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
+
     func launchLoginVC(rootVC: UIViewController) {
         let userVC = UINavigationController()
         userVC.setViewControllers([LoginViewController(), RegistrationViewController()], animated: false)
@@ -92,4 +93,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-

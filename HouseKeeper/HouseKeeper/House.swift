@@ -8,18 +8,19 @@
 
 import UIKit
 
+// House class
 class House {
     var hid: Int
     var address: String
     var rank = 0.0
     var image: UIImage
-    
+
     public var description: String { return "\(address)" }
-    
+
     init(hid: Int, address: String) {
         self.address = address
         self.hid = hid
         image = UIImage()
     }
-    
+
 }

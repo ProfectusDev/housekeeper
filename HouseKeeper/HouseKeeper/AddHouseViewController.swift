@@ -10,28 +10,30 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
+
+// This class contains the UI elements and the underlying functionality for adding a house
 class AddHouseViewController: PopUpViewController {
-    
+
     let address = TextField()
-    
+
     // complete viewDidLoad() responsory function
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // title
         titleLabel.text = "Add House"
-        
+
         // address
         address.placeholder = "Address"
         address.layer.borderColor = Style.redColor.cgColor
         address.delegate = self
-        
+
         // submit
         submit.addTarget(self, action: #selector(AddHouseViewController.handleAddHouse), for: .touchUpInside)
-        
+
         // add subviews
         view.addSubview(address)
-        
+
         // make constraints
         address.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
@@ -46,7 +48,7 @@ class AddHouseViewController: PopUpViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func handleAddHouse() {
         if Networking.token == "" {
             return
@@ -69,7 +71,7 @@ class AddHouseViewController: PopUpViewController {
                 }
         }
     }
-    
+
 
     /*
     // MARK: - Navigation
