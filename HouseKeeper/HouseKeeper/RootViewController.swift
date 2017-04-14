@@ -43,6 +43,13 @@ class RootViewController: UINavigationController {
             self.blurEffectView.isHidden = true
         })
     }
+    
+    func launchLoginVC(animated: Bool) {
+        let userVC = UINavigationController()
+        userVC.setViewControllers([LoginViewController(), RegistrationViewController()], animated: false)
+        userVC.setNavigationBarHidden(true, animated: false)
+        present(userVC, animated: animated, completion: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

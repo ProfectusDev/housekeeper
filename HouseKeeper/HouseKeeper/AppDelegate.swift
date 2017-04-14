@@ -40,12 +40,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let email = defaults.string(forKey: defaultsKeys.email)
         let password = defaults.string(forKey: defaultsKeys.password)
 
-        if ((email != nil) && (password != nil)) {
+        if (email != nil && email != "" && password != nil && password != "") {
             let parameters: Parameters = ["email": email!, "password": password!]
             Alamofire.request(Networking.baseURL + "/login", method: .post, parameters: parameters, encoding: JSONEncoding.default)
                 .responseString { response in
                     if (response.error != nil) {
-                        self.launchLoginVC(rootVC: rootVC)
+                        rootVC.launchLoginVC(animated: false)
                         return
                     }
                     let success = validate(statusCode: (response.response?.statusCode)!)
@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
             }
         } else {
-            launchLoginVC(rootVC: rootVC)
+            rootVC.launchLoginVC(animated: false)
         }
 
         return true
@@ -83,13 +83,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-    func launchLoginVC(rootVC: UIViewController) {
-        let userVC = UINavigationController()
-        userVC.setViewControllers([LoginViewController(), RegistrationViewController()], animated: false)
-        userVC.setNavigationBarHidden(true, animated: false)
-        rootVC.present(userVC, animated: false, completion: nil)
-    }
-
-
+    
 }

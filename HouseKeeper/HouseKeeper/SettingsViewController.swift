@@ -32,7 +32,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // View Controllers
         let dreamHouseVC = DreamHouseViewController(house: House(hid: 0, address: "Dream House"))
+        let userProfileVC = UserProfileViewController()
         settingsViewControllers.append([dreamHouseVC])
+        settingsViewControllers.append([userProfileVC])
         
         // Add Subviews
         view.addSubview(tableView)

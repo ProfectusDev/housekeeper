@@ -32,6 +32,7 @@
 		DCC9200F1E8DB89900B1081A /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC9200E1E8DB89900B1081A /* RadioButton.swift */; };
 		DCC920111E8E083100B1081A /* BinaryCriteriaSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC920101E8E083100B1081A /* BinaryCriteriaSelector.swift */; };
 		DCC920131E8E084100B1081A /* CriteriaSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC920121E8E084100B1081A /* CriteriaSelector.swift */; };
+		DCCF28A61EA13CB2007201F6 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCF28A51EA13CB2007201F6 /* UserProfileViewController.swift */; };
 		DCE94F491DD10B57002FB232 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE94F481DD10B57002FB232 /* AppDelegate.swift */; };
 		DCE94F4B1DD10B57002FB232 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE94F4A1DD10B57002FB232 /* RootViewController.swift */; };
 		DCE94F501DD10B57002FB232 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCE94F4F1DD10B57002FB232 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		DCC9200E1E8DB89900B1081A /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		DCC920101E8E083100B1081A /* BinaryCriteriaSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryCriteriaSelector.swift; sourceTree = "<group>"; };
 		DCC920121E8E084100B1081A /* CriteriaSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriteriaSelector.swift; sourceTree = "<group>"; };
+		DCCF28A51EA13CB2007201F6 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		DCE94F451DD10B57002FB232 /* HouseKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HouseKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE94F481DD10B57002FB232 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCE94F4A1DD10B57002FB232 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				DC0B53FA1DD3AF6200DC1795 /* SettingsViewController.swift */,
+				DCCF28A51EA13CB2007201F6 /* UserProfileViewController.swift */,
 				381F0C031E8DB6CE00D6E2B7 /* DreamHouseViewController.swift */,
 			);
 			name = Settings;
@@ -346,6 +349,7 @@
 				DC11A8BE1DD6794700E49EB0 /* House.swift in Sources */,
 				DC393ECD1E56FFFD008D92AB /* Extensions.swift in Sources */,
 				DC393ECB1E56F86F008D92AB /* PopUpViewController.swift in Sources */,
+				DCCF28A61EA13CB2007201F6 /* UserProfileViewController.swift in Sources */,
 				DC0B53F51DD3AF0900DC1795 /* AddHouseViewController.swift in Sources */,
 				DC0B53F91DD3AF5800DC1795 /* HouseViewController.swift in Sources */,
 				DC0B53F71DD3AF4A00DC1795 /* MyHousesViewController.swift in Sources */,
