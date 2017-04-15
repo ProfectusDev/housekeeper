@@ -40,6 +40,10 @@ class RegistrationViewController: UserViewController {
                     }
                     let success = validate(statusCode: (response.response?.statusCode)!)
                     if success {
+                        let defaults = UserDefaults.standard
+                        defaults.setValue(self.email.text!, forKey: defaultsKeys.email)
+                        defaults.setValue(self.password.text!, forKey: defaultsKeys.password)
+                        defaults.synchronize()
                         self.handleDismiss()
                         let json = JSON(response.data!)
                         Networking.token = json["token"].stringValue

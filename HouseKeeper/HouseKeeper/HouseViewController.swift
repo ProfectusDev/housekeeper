@@ -19,6 +19,11 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     init(house: House) {
         self.house = house
         super.init(nibName: nil, bundle: nil)
+        loadCriteria()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.loadCriteria), name: NSNotification.Name(rawValue: "loadCriteria"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.criteriaSelectorChanged), name: NSNotification.Name(rawValue: "radioChanged"), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,10 +32,6 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     override func loadView() {
         super.loadView()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.loadCriteria), name: NSNotification.Name(rawValue: "loadCriteria"), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.criteriaSelectorChanged), name: NSNotification.Name(rawValue: "radioChanged"), object: nil)
         
         // VC
         view.backgroundColor = UIColor.white
@@ -48,9 +49,6 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         // Navigation Bar
         navigationItem.rightBarButtonItem = editButtonItem
-        
-        // Networking
-        loadCriteria()
     }
     
     // Networking

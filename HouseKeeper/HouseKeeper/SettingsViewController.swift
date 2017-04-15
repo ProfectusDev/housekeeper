@@ -31,7 +31,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         // View Controllers
-        let dreamHouseVC = DreamHouseViewController(house: House(hid: 0, address: "Dream House"))
+        let dreamHouseVC = DreamHouseViewController()
         let userProfileVC = UserProfileViewController()
         settingsViewControllers.append([dreamHouseVC])
         settingsViewControllers.append([userProfileVC])

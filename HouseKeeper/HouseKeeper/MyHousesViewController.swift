@@ -15,7 +15,6 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     var houses: [House] = []
     var filteredHouses: [House] = []
-    let dreamHouse = House(hid: 0, address: "")
     let tableView = UITableView()
     let refreshControl = UIRefreshControl()
     let searchController = UISearchController(searchResultsController: nil)

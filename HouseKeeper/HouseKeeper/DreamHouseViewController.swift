@@ -13,8 +13,8 @@ import SwiftyJSON
 
 class DreamHouseViewController: HouseViewController {
     
-    override init(house: House) {
-        super.init(house: house)
+    init() {
+        super.init(house: DreamHouse.shared)
         title = "Dream House"
     }
     
