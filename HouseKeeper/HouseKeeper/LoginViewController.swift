@@ -46,7 +46,9 @@ class LoginViewController: UserViewController {
                         self.handleDismiss()
                         let json = JSON(response.data!)
                         Networking.token = json["token"].stringValue
-                        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
+                        MyHouses.shared.pullHouses(completion: { success in
+                            NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "reloadHouses")))
+                        })
                     } else {
                         self.alert(title: "Login Failed", message: response.result.value!)
                     }

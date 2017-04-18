@@ -14,9 +14,13 @@ class DreamHouse: House {
     
     static let shared = DreamHouse()
     
-    private init() {
-        super.init(hid: 0, address: "Dream House")
+    private override init() {
+        super.init()
         requestDreamHouse()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
     override func calculateRank() {

@@ -50,26 +50,10 @@ class AddHouseViewController: PopUpViewController {
     }
 
     func handleAddHouse() {
-        if Networking.token == "" {
-            return
-        }
-        let headers = generateHeaders()
-        let parameters: Parameters = ["address": address.text!]
-        Alamofire.request(Networking.baseURL + "/addHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .responseString { response in
-                if (response.error != nil) {
-                    print("Add house failed: " + (response.error?.localizedDescription)!)
-                    return
-                }
-                let success = validate(statusCode: (response.response?.statusCode)!)
-                if success {
-                    self.handleDismiss()
-                    let json = JSON(response.data!)
-                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadHouses")))
-                } else {
-                    print("Add house failed: " + response.result.value!)
-                }
-        }
+        let newHouse = House(hid: 0, address: address.text!)
+        MyHouses.shared.addHouse(house: newHouse)
+        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "reloadHouses")))
+        self.handleDismiss()
     }
 
 

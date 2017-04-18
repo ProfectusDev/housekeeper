@@ -13,7 +13,7 @@ import SwiftyJSON
 
 class MyHousesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
-    var houses: [House] = []
+    var houses = MyHouses.shared.houses
     var filteredHouses: [House] = []
     let tableView = UITableView()
     let refreshControl = UIRefreshControl()
@@ -23,7 +23,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     override func loadView() {
         super.loadView()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(MyHousesViewController.loadHouses), name: NSNotification.Name(rawValue: "loadHouses"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyHousesViewController.reloadHouses), name: NSNotification.Name(rawValue: "reloadHouses"), object: nil)
         
         // VC
         title = "Houses"
@@ -74,39 +74,18 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.reloadData()
     }
     
-    func loadHouses() {
-        if (Networking.token == "") {
-            return
-        }
-        let headers = generateHeaders()
-        Alamofire.request(Networking.baseURL + "/getHouses", method: .get, headers: headers)
-            .responseString { response in
-                if (response.error != nil) {
-                    print("Get houses failed: " + (response.error?.localizedDescription)!)
-                    return
-                }
-                let success = validate(statusCode: (response.response?.statusCode)!)
-                if success {
-                    self.houses.removeAll()
-                    let json = JSON(response.data!).arrayValue
-                    for houseData in json {
-                        var data = houseData.dictionaryValue
-                        let hid = data["hid"]?.intValue
-                        let address = data["address"]?.stringValue
-                        let house = House(hid: hid!, address: address!)
-                        self.houses.append(house)
-                    }
-                    self.tableView.reloadData()
-                } else {
-                    // self.alert(title: "Registration Failed", message: response.result.value!)
-                    print("Get house failed: " + response.result.value!)
-                }
-        }
+    func reloadHouses() {
+        print(houses)
+        houses = MyHouses.shared.houses
+        print(houses)
+        self.tableView.reloadData()
     }
     
     func refresh() {
-        loadHouses()
-        refreshControl.endRefreshing()
+        MyHouses.shared.syncHouses(completion: { (success) in
+            self.reloadHouses()
+            self.refreshControl.endRefreshing()
+        })
     }
     
     func addHouse() {
@@ -166,23 +145,8 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            let headers = generateHeaders()
-            let parameters: Parameters = ["hid": self.houses[indexPath.row].hid]
-            Alamofire.request(Networking.baseURL + "/deleteHouse", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .responseString { response in
-                    if (response.error != nil) {
-                        print("Delete house failed: " + (response.error?.localizedDescription)!)
-                        return
-                    }
-                    let success = validate(statusCode: (response.response?.statusCode)!)
-                    if success {
-                        self.houses.remove(at: indexPath.row)
-                        self.tableView.reloadData()
-                    } else {
-                        // self.alert(title: "Registration Failed", message: response.result.value!)
-                        print("Delete house failed: " + response.result.value!)
-                    }
-            }
+            MyHouses.shared.removeHouse(at: indexPath.row)
+            self.reloadHouses()
         }
         
         return [delete]
