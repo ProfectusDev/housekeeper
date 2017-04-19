@@ -17,7 +17,7 @@ class PopUpViewController: UIViewController, UITextFieldDelegate {
     let submit = UIButton()
     let cancel = UIButton()
     var keyboardHeight = CGFloat(258.0)
-    private var layedout = false
+    var layedout = false
 
     override func viewDidLoad() {
         super.viewDidLoad()

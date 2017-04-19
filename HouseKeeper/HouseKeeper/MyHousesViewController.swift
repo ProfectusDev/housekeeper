@@ -126,13 +126,17 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = HouseTableViewCell(style: .default, reuseIdentifier: "house")
-        cell.photoView.image = UIImage(named: "Placeholder")
         
+        var house = houses[indexPath.row]
         if searchController.isActive && searchController.searchBar.text != "" {
-            cell.titleLabel.text = filteredHouses[indexPath.row].address
+            house = filteredHouses[indexPath.row]
         } else {
-            cell.titleLabel.text = houses[indexPath.row].address
+            house = houses[indexPath.row]
         }
+        cell.titleLabel.text = house.address
+        cell.descriptionLabel.text = "Dream House Similarity: \(house.rank * 100)%"
+        
+        cell.photoView.image = house.image
         
         return cell
     }

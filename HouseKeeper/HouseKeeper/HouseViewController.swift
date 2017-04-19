@@ -23,6 +23,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         house.syncCriteriaWithDreamHouse()
         MyHouses.shared.syncCriteria(for: house) { (success) in
             self.reloadCriteria()
+            house.calculateRank()
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.reloadCriteria), name: NSNotification.Name(rawValue: "reloadCriteria"), object: nil)
@@ -38,7 +39,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.loadView()
         
         // VC
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = Style.whiteColor
         
         // Table View
         
@@ -63,10 +64,6 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        house.syncCriteriaWithDreamHouse()
-//        MyHouses.shared.syncCriteria(for: house) { (success) in
-//            self.reloadCriteria()
-//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -147,24 +144,25 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func handleCriteriaUpdate(indexPath: IndexPath) {
-//        if Networking.token == "" && house.hid == 0 {
-//            return
-//        }
-//        let id = self.house.criteria[indexPath.section][indexPath.row].id
-//        let value = self.house.criteria[indexPath.section][indexPath.row].value
-//        let headers = generateHeaders()
-//        let parameters: Parameters = ["hid": house.hid, "id": id, "value": value]
-//        Alamofire.request(Networking.baseURL + "/updateCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-//            .responseString { response in
-//                if (response.error != nil) {
-//                    print("Update criterion failed: " + (response.error?.localizedDescription)!)
-//                    return
-//                }
-//                let success = validate(statusCode: (response.response?.statusCode)!)
-//                if !success {
-//                    print("Update criterion failed: " + response.result.value!)
-//                }
-//        }
+        house.calculateRank()
+        if Networking.token == "" && house.hid == 0 {
+            return
+        }
+        let id = self.house.criteria[indexPath.section][indexPath.row].id
+        let value = self.house.criteria[indexPath.section][indexPath.row].value
+        let headers = generateHeaders()
+        let parameters: Parameters = ["hid": house.hid, "id": id, "value": value]
+        Alamofire.request(Networking.baseURL + "/updateCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .responseString { response in
+                if (response.error != nil) {
+                    print("Update criterion failed: " + (response.error?.localizedDescription)!)
+                    return
+                }
+                let success = validate(statusCode: (response.response?.statusCode)!)
+                if !success {
+                    print("Update criterion failed: " + response.result.value!)
+                }
+        }
     }
     
     // Sections

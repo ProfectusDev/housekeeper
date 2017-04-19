@@ -15,16 +15,20 @@ class HouseTableViewCell: UITableViewCell {
     let group = UIView()
     let photoView = UIImageView()
     let titleLabel = UILabel()
+    let descriptionLabel = UILabel()
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        descriptionLabel.font = UIFont.systemFont(ofSize: 14.0)
+        
         photoView.layer.cornerRadius = 12.0
         photoView.clipsToBounds = true
 
         addSubview(group)
         group.addSubview(photoView)
         group.addSubview(titleLabel)
+        group.addSubview(descriptionLabel)
 
         group.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -39,6 +43,11 @@ class HouseTableViewCell: UITableViewCell {
         titleLabel.snp.makeConstraints({ (make) in
             make.left.equalTo(130)
             make.top.equalTo(15)
+        })
+        
+        descriptionLabel.snp.makeConstraints({ (make) in
+            make.left.equalTo(130)
+            make.top.equalTo(45)
         })
     }
 

@@ -14,12 +14,9 @@ class House: NSObject, NSCoding {
     var hid = 0
     var address = ""
     var rank = 0.0
-    var image = UIImage()
-    var criteria: [[Criterion]] = Array(repeatElement([Criterion](), count: Category.allValues.count)) {
-        didSet {
-            calculateRank()
-        }
-    }
+    var matchingRatio: [Double] = [Double](repeating: 0.0, count: Category.allValues.count)
+    var image = UIImage(named: "Placeholder")
+    var criteria: [[Criterion]] = Array(repeatElement([Criterion](), count: Category.allValues.count))
     var remoteCriteria: [[Criterion]] = Array(repeatElement([Criterion](), count: Category.allValues.count))
     var deletedCriteria: [Criterion] = [Criterion]()
 
@@ -36,7 +33,7 @@ class House: NSObject, NSCoding {
         hid = aDecoder.decodeInteger(forKey: "hid") 
         address = aDecoder.decodeObject(forKey: "address") as? String ?? ""
         rank = aDecoder.decodeDouble(forKey: "rank")
-        image = aDecoder.decodeObject(forKey: "image") as? UIImage ?? UIImage()
+        image = aDecoder.decodeObject(forKey: "image") as? UIImage ?? UIImage(named: "Placeholder")
         criteria = aDecoder.decodeObject(forKey: "criteria") as? [[Criterion]] ?? [[Criterion]]()
     }
     
@@ -111,10 +108,33 @@ class House: NSObject, NSCoding {
     
     func calculateRank() {
         rank = 0.0
-        for section in criteria {
+        var total = 0.0
+        var correct = 0.0
+        for (sectionIndex, section) in criteria.enumerated() {
+            var sectionTotal = 0.0
+            var sectionCorrect = 0.0
             for criterion in section {
-                rank += Double(criterion.value)
+                if criterion.isDream {
+                    for dreamCriteria in DreamHouse.shared.criteria[sectionIndex] {
+                        if dreamCriteria.name == criterion.name {
+                            sectionTotal += 1
+                            if dreamCriteria.value == criterion.value {
+                                sectionCorrect += 1
+                            }
+                        }
+                    }
+                }
             }
+            if sectionTotal > 0.0 {
+                matchingRatio[sectionIndex] = sectionCorrect / sectionTotal
+            } else {
+                matchingRatio[sectionIndex] = 0.0
+            }
+            total += sectionTotal
+            correct += sectionCorrect
+        }
+        if total > 0 {
+            rank = correct / total
         }
     }
 }

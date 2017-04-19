@@ -39,7 +39,7 @@ class Criterion: NSObject, NSCoding {
     var isDream = false
 
 
-    override public var description: String { return "\(id): \(name) \(isDream)" }
+    override public var description: String { return "\(id): \(name)" }
 
     init(id: Int) {
         self.id = id

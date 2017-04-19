@@ -20,7 +20,6 @@ class RootViewController: UINavigationController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(RootViewController.unBlur), name: NSNotification.Name(rawValue: "unblur"), object: nil)
 
-        view.backgroundColor = UIColor.white
         navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)]
 
         blurEffectView.frame = self.view.frame
