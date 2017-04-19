@@ -37,6 +37,7 @@ class AddCriterionViewController: PopUpViewController, UIPickerViewDataSource, U
         // picker
         pickerView.delegate = self
         dataType.inputView = pickerView
+        pickerView.selectRow(0, inComponent: 0, animated: true)
 
         // submit
         submit.addTarget(self, action: #selector(AddCriterionViewController.handleAddCriterion), for: .touchUpInside)
@@ -92,6 +93,11 @@ class AddCriterionViewController: PopUpViewController, UIPickerViewDataSource, U
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         dataType.text = DataType.allValues[row].rawValue
+    }
+    
+    override func textFieldDidBeginEditing(_ textField: UITextField) {
+        super.textFieldDidBeginEditing(textField)
+        
     }
     
     override func didReceiveMemoryWarning() {

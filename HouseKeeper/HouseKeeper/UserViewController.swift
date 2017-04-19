@@ -44,6 +44,7 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         email.autocorrectionType = .no
         email.keyboardType = .emailAddress
         email.delegate = self
+        email.tintColor = Style.whiteColor
 
         // password
         password.layer.borderColor = Style.whiteColor.cgColor
@@ -53,6 +54,7 @@ class UserViewController: UIViewController, UITextFieldDelegate {
         password.autocapitalizationType = .none
         password.autocorrectionType = .no
         password.delegate = self
+        password.tintColor = Style.whiteColor
 
         // button
         button.setTitle("Button", for: .normal)

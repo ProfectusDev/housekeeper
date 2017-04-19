@@ -29,6 +29,8 @@ class RootViewController: UINavigationController {
     }
 
     func blur() {
+        print("blur")
+//        view.bringSubview(toFront: blurEffectView)
         blurEffectView.isHidden = false
         UIView.animate(withDuration: 0.3) {
             self.blurEffectView.effect = UIBlurEffect(style: .light)

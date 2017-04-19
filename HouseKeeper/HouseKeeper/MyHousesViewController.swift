@@ -134,7 +134,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
             house = houses[indexPath.row]
         }
         cell.titleLabel.text = house.address
-        cell.descriptionLabel.text = "Dream House Similarity: \(house.rank * 100)%"
+        cell.descriptionLabel.text = "Dream House Similarity: \(round(house.rank * 100))%"
         
         cell.photoView.image = house.image
         

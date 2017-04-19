@@ -44,7 +44,16 @@ class RegistrationViewController: UserViewController {
                         defaults.setValue(self.email.text!, forKey: defaultsKeys.email)
                         defaults.setValue(self.password.text!, forKey: defaultsKeys.password)
                         defaults.synchronize()
-                        self.handleDismiss()
+                        self.navigationController?.view.layer.removeAllAnimations()
+                        self.navigationController?.dismiss(animated: true, completion: {
+                            let appDelegate  = UIApplication.shared.delegate as! AppDelegate
+                            let rootViewController = appDelegate.window!.rootViewController as! RootViewController
+                            let settingsVC = UINavigationController(rootViewController: SettingsViewController())
+                            settingsVC.pushViewController(DreamHouseViewController(), animated: false)
+                            rootViewController.present(settingsVC, animated: true, completion: {
+                                //
+                            })
+                        })
                         let json = JSON(response.data!)
                         Networking.token = json["token"].stringValue
                         MyHouses.shared.syncHouses(completion: { success in

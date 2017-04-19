@@ -24,6 +24,7 @@ class HouseTableViewCell: UITableViewCell {
         
         photoView.layer.cornerRadius = 12.0
         photoView.clipsToBounds = true
+        photoView.contentMode = .scaleAspectFill
 
         addSubview(group)
         group.addSubview(photoView)

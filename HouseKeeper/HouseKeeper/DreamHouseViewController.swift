@@ -25,6 +25,14 @@ class DreamHouseViewController: HouseViewController {
     override func loadView() {
         super.loadView()
         
+        tableView.contentInset.top = 0.0
+        tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        chart.isHidden = true
+        refreshControl.bounds = refreshControl.bounds.offsetBy(dx: 0, dy: -200)
+        
+        let appDelegate  = UIApplication.shared.delegate as! AppDelegate
+        let rootViewController = appDelegate.window!.rootViewController as! RootViewController
+        view.addSubview(rootViewController.blurEffectView)
     }
     
     

@@ -14,12 +14,12 @@ import SwiftyJSON
 enum Category: String {
     case location
     case price
-    case amenities
+    case appliances
     case interior
     case exterior
     case other
 
-    static let allValues = [location, price, amenities, interior, exterior, other]
+    static let allValues = [location, price, appliances, interior, exterior, other]
 }
 
 enum DataType: String {

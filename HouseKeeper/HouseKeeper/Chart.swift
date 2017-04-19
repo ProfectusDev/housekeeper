@@ -62,12 +62,17 @@ class Chart: UIView {
         let height = Double(frame.height) * value
         let x = Double(index) * (width + padding)
         let y = Double(frame.height) - height
-        UIView.animate(withDuration: 0.3) {
-            self.bars[index].frame = CGRect(x: x, y: y, width: width, height: height)
-            if value > 0 {
-                self.titleViews[index].textColor = Style.whiteColor
-            } else {
-                self.titleViews[index].textColor = self.colors[index]
+        if frame != CGRect.zero {
+            if self.bars[index].frame == CGRect.zero {
+                self.bars[index].frame = CGRect(x: x, y: Double(frame.height), width: width, height: 0)
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.bars[index].frame = CGRect(x: x, y: y, width: width, height: height)
+                if value > 0 {
+                    self.titleViews[index].textColor = Style.whiteColor
+                } else {
+                    self.titleViews[index].textColor = self.colors[index]
+                }
             }
         }
     }

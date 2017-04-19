@@ -25,7 +25,6 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         MyHouses.shared.syncCriteria(for: house) { (success) in
             self.reloadCriteria()
             house.calculateRank()
-            self.updateChart()
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.reloadCriteria), name: NSNotification.Name(rawValue: "reloadCriteria"), object: nil)
@@ -58,6 +57,8 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
         
+        refreshControl.bounds = refreshControl.bounds.offsetBy(dx: 0, dy: 200)
+        
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
@@ -79,6 +80,12 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.updateChart()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateChart()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -206,6 +213,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         header.textLabel?.textColor = Style.blackColor
         header.contentView.backgroundColor = Style.whiteColor
         header.layer.zPosition = 0
+        header.textLabel?.text = header.textLabel?.text?.capitalized
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -258,6 +266,8 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         return proposedDestinationIndexPath
     }
+    
+    // Header
     
     // Utility
     func isCriteriaRow(at indexPath: IndexPath) -> Bool {
