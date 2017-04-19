@@ -14,7 +14,8 @@ import SwiftyJSON
 class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var house: House
-    let tableView = UITableView()
+    let tableView = UITableView(frame: CGRect.zero, style: .grouped)
+    let chart = Chart()
     let refreshControl = UIRefreshControl()
     
     init(house: House) {
@@ -24,6 +25,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         MyHouses.shared.syncCriteria(for: house) { (success) in
             self.reloadCriteria()
             house.calculateRank()
+            self.updateChart()
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.reloadCriteria), name: NSNotification.Name(rawValue: "reloadCriteria"), object: nil)
@@ -42,17 +44,19 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         view.backgroundColor = Style.whiteColor
         
         // Table View
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "criterion")
         tableView.backgroundColor = Style.whiteColor
+        tableView.contentInset.bottom = 44.0
+        tableView.contentInset.top = 200.0
+        tableView.setContentOffset(CGPoint(x: 0, y: -200), animated: true)
+        tableView.addSubview(chart)
         view.addSubview(tableView)
         
         // Refresh
         refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        tableView.contentInset.bottom = 44.0
         
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -60,6 +64,17 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         // Navigation Bar
         navigationItem.rightBarButtonItem = editButtonItem
+        
+        // Layout Subviews
+        chart.snp.makeConstraints { (make) in
+            make.width.equalToSuperview().inset(20.0)
+            make.height.equalTo(180.0)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(-180.0)
+        }
+        
+        chart.setNeedsDisplay()
+        chart.layoutSubviews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +92,12 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.reloadCriteria()
             self.refreshControl.endRefreshing()
         })
+    }
+    
+    func updateChart() {
+        for (index, _) in house.criteria.enumerated() {
+            chart.updateValue(value: house.matchingRatio[index], for: index)
+        }
     }
     
     // Networking
@@ -145,6 +166,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func handleCriteriaUpdate(indexPath: IndexPath) {
         house.calculateRank()
+        updateChart()
         if Networking.token == "" && house.hid == 0 {
             return
         }

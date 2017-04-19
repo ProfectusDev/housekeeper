@@ -34,6 +34,7 @@
 		DCC920131E8E084100B1081A /* CriteriaSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC920121E8E084100B1081A /* CriteriaSelector.swift */; };
 		DCCF28A61EA13CB2007201F6 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCF28A51EA13CB2007201F6 /* UserProfileViewController.swift */; };
 		DCCF28AA1EA496BD007201F6 /* MyHouses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCF28A91EA496BD007201F6 /* MyHouses.swift */; };
+		DCCF28AE1EA772C4007201F6 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCF28AD1EA772C4007201F6 /* Chart.swift */; };
 		DCE94F491DD10B57002FB232 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE94F481DD10B57002FB232 /* AppDelegate.swift */; };
 		DCE94F4B1DD10B57002FB232 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE94F4A1DD10B57002FB232 /* RootViewController.swift */; };
 		DCE94F501DD10B57002FB232 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCE94F4F1DD10B57002FB232 /* Assets.xcassets */; };
@@ -70,6 +71,7 @@
 		DCC920121E8E084100B1081A /* CriteriaSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriteriaSelector.swift; sourceTree = "<group>"; };
 		DCCF28A51EA13CB2007201F6 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		DCCF28A91EA496BD007201F6 /* MyHouses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHouses.swift; sourceTree = "<group>"; };
+		DCCF28AD1EA772C4007201F6 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		DCE94F451DD10B57002FB232 /* HouseKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HouseKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE94F481DD10B57002FB232 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCE94F4A1DD10B57002FB232 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		DC396EBE1E39C007005E5427 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DCCF28AD1EA772C4007201F6 /* Chart.swift */,
 				DC396EBF1E39C04D005E5427 /* TextField.swift */,
 				DCC9200E1E8DB89900B1081A /* RadioButton.swift */,
 				DCC920101E8E083100B1081A /* BinaryCriteriaSelector.swift */,
@@ -358,6 +361,7 @@
 				DC0B53F71DD3AF4A00DC1795 /* MyHousesViewController.swift in Sources */,
 				DCC9200F1E8DB89900B1081A /* RadioButton.swift in Sources */,
 				DC0B53F31DD3AE6800DC1795 /* RegistrationViewController.swift in Sources */,
+				DCCF28AE1EA772C4007201F6 /* Chart.swift in Sources */,
 				DCCF28AA1EA496BD007201F6 /* MyHouses.swift in Sources */,
 				DCE94F491DD10B57002FB232 /* AppDelegate.swift in Sources */,
 				DC0B53FD1DD3B0A200DC1795 /* Style.swift in Sources */,
