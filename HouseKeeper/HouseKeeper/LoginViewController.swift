@@ -46,7 +46,7 @@ class LoginViewController: UserViewController {
                         self.handleDismiss()
                         let json = JSON(response.data!)
                         Networking.token = json["token"].stringValue
-                        MyHouses.shared.pullHouses(completion: { success in
+                        MyHouses.shared.syncHouses(completion: { success in
                             NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "reloadHouses")))
                         })
                     } else {

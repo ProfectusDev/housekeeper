@@ -12,7 +12,7 @@ import Alamofire
 // Functionality for adding custom criterion
 class AddCriterionViewController: PopUpViewController {
 
-    var hid = 0
+    var house: House?
     var category = Category.other
     let name = TextField()
 
@@ -45,25 +45,16 @@ class AddCriterionViewController: PopUpViewController {
     }
 
     func handleAddCriterion() {
-        if Networking.token == "" && hid == 0 {
-            return
+        if house != nil {
+            if let index = Category.allValues.index(of: category) {
+                let criterion = Criterion(id: 0)
+                criterion.category = category
+                criterion.name = name.text!
+                house?.criteria[index].append(criterion)
+            }
         }
-        let headers = generateHeaders()
-        let parameters: Parameters = ["hid": hid, "name": name.text!, "category": category.rawValue]
-        Alamofire.request(Networking.baseURL + "/addCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .responseString { response in
-                if (response.error != nil) {
-                    print("Add criterion failed: " + (response.error?.localizedDescription)!)
-                    return
-                }
-                let success = validate(statusCode: (response.response?.statusCode)!)
-                if success {
-                    self.handleDismiss()
-                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "loadCriteria")))
-                } else {
-                    print("Add criterion failed: " + response.result.value!)
-                }
-        }
+        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "reloadCriteria")))
+        self.handleDismiss()
     }
 
     override func didReceiveMemoryWarning() {

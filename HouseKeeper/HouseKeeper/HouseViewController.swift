@@ -15,13 +15,16 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var house: House
     let tableView = UITableView()
+    let refreshControl = UIRefreshControl()
     
     init(house: House) {
         self.house = house
         super.init(nibName: nil, bundle: nil)
-        loadCriteria()
+        MyHouses.shared.syncCriteria(for: house) { (success) in
+            self.reloadCriteria()
+        }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.loadCriteria), name: NSNotification.Name(rawValue: "loadCriteria"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.reloadCriteria), name: NSNotification.Name(rawValue: "reloadCriteria"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(HouseViewController.criteriaSelectorChanged), name: NSNotification.Name(rawValue: "radioChanged"), object: nil)
     }
@@ -37,11 +40,17 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         view.backgroundColor = UIColor.white
         
         // Table View
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HouseTableViewCell.self, forCellReuseIdentifier: "criterion")
         tableView.backgroundColor = Style.whiteColor
         view.addSubview(tableView)
+        
+        // Refresh
+        refreshControl.addTarget(self, action: #selector(MyHousesViewController.refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+        tableView.contentInset.bottom = 44.0
         
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -51,35 +60,17 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         navigationItem.rightBarButtonItem = editButtonItem
     }
     
+    func refresh() {
+        MyHouses.shared.syncCriteria(for: house, completion: { (success) in
+            self.reloadCriteria()
+            self.refreshControl.endRefreshing()
+        })
+    }
+    
     // Networking
-    func loadCriteria() {
-        if (Networking.token == "" || house.hid == 0) {
-            return
-        }
-        let headers = generateHeaders()
-        let parameters: Parameters = ["hid": house.hid]
-        Alamofire.request(Networking.baseURL + "/getCriteria", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .responseString { response in
-                if (response.error != nil) {
-                    print("Get criteria failed: " + (response.error?.localizedDescription)!)
-                    return
-                }
-                let success = validate(statusCode: (response.response?.statusCode)!)
-                if success {
-                    for section in 0..<self.house.criteria.count {
-                        self.house.criteria[section].removeAll()
-                    }
-                    let json = JSON(response.data!).arrayValue
-                    for criterionData in json {
-                        let criterion = Criterion.decodeJSON(data: criterionData.dictionaryValue)
-                        let category = criterion.category
-                        self.house.criteria[Category.allValues.index(of: category)!].append(criterion)
-                    }
-                    self.tableView.reloadData()
-                } else {
-                    print("Get criteria failed: " + response.result.value!)
-                }
-        }
+    func reloadCriteria() {
+        print(house.criteria)
+        self.tableView.reloadData()
     }
     
     // Rows
@@ -119,7 +110,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !isCriteriaRow(at: indexPath) {
             let modal = AddCriterionViewController()
-            modal.hid = house.hid
+            modal.house = house
             modal.category = Category.allValues[indexPath.section]
             modal.modalPresentationStyle = .overCurrentContext
             present(modal, animated: true, completion: {
@@ -192,24 +183,9 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            let id = self.house.criteria[indexPath.section][indexPath.row].id
-            let headers = generateHeaders()
-            let parameters: Parameters = ["id": id, "hid": self.house.hid]
-            Alamofire.request(Networking.baseURL + "/deleteCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .responseString { response in
-                    if (response.error != nil) {
-                        print("Delete criteria failed: " + (response.error?.localizedDescription)!)
-                        return
-                    }
-                    let success = validate(statusCode: (response.response?.statusCode)!)
-                    if success {
-                        self.house.criteria[indexPath.section].remove(at: indexPath.row)
-                        self.tableView.reloadData()
-                    } else {
-                        // self.alert(title: "Registration Failed", message: response.result.value!)
-                        print("Delete criteria failed: " + response.result.value!)
-                    }
-            }
+            let deletedHouse = self.house.criteria[indexPath.section].remove(at: indexPath.row)
+            self.house.deletedCriteria.append(deletedHouse)
+            self.reloadCriteria()
         }
         
         return [delete]

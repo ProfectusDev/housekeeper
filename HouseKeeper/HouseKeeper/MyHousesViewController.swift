@@ -75,9 +75,7 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func reloadHouses() {
-        print(houses)
         houses = MyHouses.shared.houses
-        print(houses)
         self.tableView.reloadData()
     }
     

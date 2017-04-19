@@ -28,18 +28,38 @@ enum DataType: String {
 }
 
 
-class Criterion: CustomStringConvertible {
-    var id: Int
+class Criterion: NSObject, NSCoding {
+    var id = 0
     var name = ""
     var category = Category.other
     var value = 0
     var type = DataType.binary
 
 
-    public var description: String { return name }
+    override public var description: String { return "\(id): \(name)" }
 
     init(id: Int) {
         self.id = id
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        id = aDecoder.decodeInteger(forKey: "id")
+        name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
+        if aDecoder.decodeObject(forKey: "category") != nil {
+            category = Category(rawValue: aDecoder.decodeObject(forKey: "category") as! String) ?? .other
+        }
+        value = aDecoder.decodeInteger(forKey: "value")
+        if aDecoder.decodeObject(forKey: "type") != nil {
+            type = DataType(rawValue: aDecoder.decodeObject(forKey: "type") as! String) ?? .binary
+        }
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(category.rawValue, forKey: "category")
+        aCoder.encode(value, forKey: "value")
+        aCoder.encode(type.rawValue, forKey: "type")
     }
 
     static func decodeJSON(data: Dictionary<String, JSON>) -> Criterion {

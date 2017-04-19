@@ -20,6 +20,8 @@ class House: NSObject, NSCoding {
             calculateRank()
         }
     }
+    var remoteCriteria: [[Criterion]] = Array(repeatElement([Criterion](), count: Category.allValues.count))
+    var deletedCriteria: [Criterion] = [Criterion]()
 
     override public var description: String { return "\(hid): \(address)" }
     
@@ -35,6 +37,7 @@ class House: NSObject, NSCoding {
         address = aDecoder.decodeObject(forKey: "address") as? String ?? ""
         rank = aDecoder.decodeDouble(forKey: "rank")
         image = aDecoder.decodeObject(forKey: "image") as? UIImage ?? UIImage()
+        criteria = aDecoder.decodeObject(forKey: "criteria") as? [[Criterion]] ?? [[Criterion]]()
     }
     
     func encode(with aCoder: NSCoder) {
@@ -42,6 +45,7 @@ class House: NSObject, NSCoding {
         aCoder.encode(address, forKey: "address")
         aCoder.encode(rank, forKey: "rank")
         aCoder.encode(image, forKey: "image")
+        aCoder.encode(criteria, forKey: "criteria")
     }
     
     func calculateRank() {

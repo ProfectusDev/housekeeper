@@ -44,7 +44,9 @@ class DreamHouse: House {
                     var dreamHouse = json["dreamHouse"].dictionaryValue
                     self.hid = (dreamHouse["hid"]?.intValue)!
                     self.address = (dreamHouse["address"]?.stringValue)!
-                    print(self.hid)
+                    MyHouses.shared.syncCriteria(for: self, completion: { (success) in
+                        //nothing
+                    })
                 } else {
                     print("Get dream house failed: " + response.result.value!)
                 }

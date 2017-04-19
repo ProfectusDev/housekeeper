@@ -54,6 +54,22 @@ class MyHouses {
                     let address = data["address"]?.stringValue
                     let house = House(hid: hid!, address: address!)
                     self.remoteHouses.append(house)
+                    var shouldAdd = true
+                    for deletedHouse in self.deletedHouses {
+                        if deletedHouse.hid == house.hid {
+                            shouldAdd = false
+                            break
+                        }
+                    }
+                    for oldHouse in self.houses {
+                        if oldHouse.hid == house.hid {
+                            shouldAdd = false
+                            break
+                        }
+                    }
+                    if shouldAdd {
+                        self.houses.append(house)
+                    }
                 }
                 completion(true)
             case .failure(let error):
@@ -85,7 +101,7 @@ class MyHouses {
     private func deleteHousesFromRemote() {
         if (Networking.token == "") { return }
         let headers = generateHeaders()
-        for deletedHouse in deletedHouses {
+        for (idx, deletedHouse) in deletedHouses.enumerated().reversed() {
             for (i, remoteHouse) in remoteHouses.enumerated().reversed() {
                 if deletedHouse.hid == remoteHouse.hid {
                     let parameters: Parameters = ["hid": deletedHouse.hid]
@@ -93,6 +109,7 @@ class MyHouses {
                         switch response.result {
                         case .success:
                             self.remoteHouses.remove(at: i)
+                            self.deletedHouses.remove(at: idx)
                         case .failure(let error):
                             print(error.localizedDescription)
                         }
@@ -101,6 +118,107 @@ class MyHouses {
             }
         }
         deletedHouses.removeAll()
+    }
+    
+    func syncCriteria(for house: House, completion: @escaping (Bool) -> Void) {
+        if (house.hid == 0) {
+            completion(false)
+            return
+        }
+        getCriteriaForHouse(house: house, completion: { success in
+            if success {
+                self.addCriteriaToRemote(house: house)
+                self.deleteCriteriaFromRemote(house: house)
+            }
+            completion(success)
+        })
+    }
+    
+    private func getCriteriaForHouse(house: House, completion: @escaping (Bool) -> Void) {
+        if (Networking.token == "" || house.hid == 0) { return }
+        let headers = generateHeaders()
+        let parameters: Parameters = ["hid": house.hid]
+        Alamofire.request(Networking.baseURL + "/getCriteria", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseString { response in
+            switch response.result {
+            case .success:
+                for section in 0..<house.criteria.count {
+                    house.remoteCriteria[section].removeAll()
+                }
+                let json = JSON(response.data!).arrayValue
+                for criterionData in json {
+                    let criterion = Criterion.decodeJSON(data: criterionData.dictionaryValue)
+                    let category = criterion.category
+                    let index = Category.allValues.index(of: category)!
+                    house.remoteCriteria[index].append(criterion)
+                    var shouldAdd = true
+                    for deletedCriterion in house.deletedCriteria {
+                        if deletedCriterion.id == criterion.id {
+                            shouldAdd = false
+                            break
+                        }
+                    }
+                    for section in house.criteria {
+                        for oldCriterion in section {
+                            if oldCriterion.id == criterion.id {
+                                shouldAdd = false
+                                break
+                            }
+                        }
+                    }
+                    if shouldAdd {
+                        house.criteria[index].append(criterion)
+                    }
+                }
+                completion(true)
+            case .failure(let error):
+                print("Get criteria failed: " + error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+    
+    private func addCriteriaToRemote(house: House) {
+        if (Networking.token == "" || house.hid == 0) { return }
+        let headers = generateHeaders()
+        for (i, section) in house.criteria.enumerated() {
+            for (j, criterion) in section.enumerated() {
+                if criterion.id == 0 {
+                    let parameters: Parameters = ["hid": house.hid, "name": criterion.name, "category": criterion.category.rawValue]
+                    Alamofire.request(Networking.baseURL + "/addCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseString { response in
+                        switch response.result {
+                        case .success:
+                            let json = JSON(response.data!)
+                            house.criteria[i][j].id = json["id"].intValue
+                        case .failure(let error):
+                            print("Add criteria to remote error: " + error.localizedDescription)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func deleteCriteriaFromRemote(house: House) {
+        if (Networking.token == "" || house.hid == 0) { return }
+        let headers = generateHeaders()
+        for (idx, deletedCriterion) in house.deletedCriteria.enumerated().reversed() {
+            for remoteSection in house.remoteCriteria {
+                for remoteCriterion in remoteSection {
+                    if deletedCriterion.id == remoteCriterion.id {
+                        let parameters: Parameters = ["hid": house.hid, "id": deletedCriterion.id]
+                        Alamofire.request(Networking.baseURL + "/deleteCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseString { response in
+                            switch response.result {
+                            case .success:
+                                house.deletedCriteria.remove(at: idx)
+                            case .failure(let error):
+                                print(error.localizedDescription)
+                                print("Delete criteria from remote error: " + error.localizedDescription)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func loadHouses() {
