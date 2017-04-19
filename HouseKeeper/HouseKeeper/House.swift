@@ -48,6 +48,67 @@ class House: NSObject, NSCoding {
         aCoder.encode(criteria, forKey: "criteria")
     }
     
+    func addCriterion(criterion: Criterion, to section: Int) {
+        criteria[section].append(criterion)
+    }
+    
+    func addCriterion(criterion: Criterion, to section: Category) {
+        if let index = Category.allValues.index(of: section) {
+            addCriterion(criterion: criterion, to: index)
+        }
+    }
+    
+    func removeCriterion(index: Int, from section: Int) {
+        let deletedCriterion = criteria[section].remove(at: index)
+        deletedCriteria.append(deletedCriterion)
+    }
+    
+    func syncCriteriaWithDreamHouse() {
+        if self == DreamHouse.shared { return }
+        print("dream sync")
+        for (sectionIndex, dreamSection) in DreamHouse.shared.criteria.enumerated() {
+            for dreamCriterion in dreamSection {
+                var shouldAdd = true
+                for (index, criterion) in criteria[sectionIndex].enumerated().reversed() {
+                    if criterion.name.lowercased() == dreamCriterion.name.lowercased() {
+                        print(criterion, dreamCriterion)
+                        if criterion.type != dreamCriterion.type {
+                            removeCriterion(index: index, from: sectionIndex)
+                            shouldAdd = true
+                        } else {
+                            shouldAdd = false
+                        }
+                        break
+                    }
+                }
+                if shouldAdd {
+                    let newCriterion = Criterion(id: 0)
+                    newCriterion.name = dreamCriterion.name
+                    newCriterion.type = dreamCriterion.type
+                    newCriterion.category = dreamCriterion.category
+                    newCriterion.isDream = true
+                    addCriterion(criterion: newCriterion, to: sectionIndex)
+                }
+            }
+        }
+        for (sectionIndex, section) in criteria.enumerated().reversed() {
+            for (index, criteria) in section.enumerated().reversed() {
+                if criteria.isDream {
+                    var shouldDelete = true
+                    for dreamCriteria in DreamHouse.shared.criteria[sectionIndex] {
+                        if criteria.name.lowercased() == dreamCriteria.name.lowercased() {
+                            shouldDelete = false
+                            break
+                        }
+                    }
+                    if shouldDelete {
+                        removeCriterion(index: index, from: sectionIndex)
+                    }
+                }
+            }
+        }
+    }
+    
     func calculateRank() {
         rank = 0.0
         for section in criteria {

@@ -25,6 +25,8 @@ enum Category: String {
 enum DataType: String {
     case binary
     case ternary
+    
+    static let allValues = [binary, ternary]
 }
 
 
@@ -34,9 +36,10 @@ class Criterion: NSObject, NSCoding {
     var category = Category.other
     var value = 0
     var type = DataType.binary
+    var isDream = false
 
 
-    override public var description: String { return "\(id): \(name)" }
+    override public var description: String { return "\(id): \(name) \(isDream)" }
 
     init(id: Int) {
         self.id = id
@@ -52,6 +55,7 @@ class Criterion: NSObject, NSCoding {
         if aDecoder.decodeObject(forKey: "type") != nil {
             type = DataType(rawValue: aDecoder.decodeObject(forKey: "type") as! String) ?? .binary
         }
+        isDream = aDecoder.decodeBool(forKey: "dream")
     }
     
     func encode(with aCoder: NSCoder) {
@@ -60,6 +64,7 @@ class Criterion: NSObject, NSCoding {
         aCoder.encode(category.rawValue, forKey: "category")
         aCoder.encode(value, forKey: "value")
         aCoder.encode(type.rawValue, forKey: "type")
+        aCoder.encode(isDream, forKey: "dream")
     }
 
     static func decodeJSON(data: Dictionary<String, JSON>) -> Criterion {
@@ -68,13 +73,14 @@ class Criterion: NSObject, NSCoding {
         let category = data["category"]?.stringValue
         let type = data["data type"]?.stringValue
         let value = data["value"]?.intValue
+        let isDream = data["isDream"]?.intValue
 
         let criterion = Criterion(id: id!)
         criterion.name = name!
         criterion.category = Category(rawValue: category!)!
         criterion.value = value!
         criterion.type = DataType(rawValue: type!)!
-
+        criterion.isDream = isDream != 0
 
         return criterion
     }

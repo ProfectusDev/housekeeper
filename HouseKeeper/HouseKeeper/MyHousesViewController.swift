@@ -68,14 +68,24 @@ class MyHousesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        houses.sort { (houseA, houseB) -> Bool in
-            return houseA.rank > houseB.rank
-        }
-        tableView.reloadData()
+        super.viewWillAppear(animated)
+        MyHouses.shared.syncHouses(completion: { (success) in
+            self.reloadHouses()
+        })
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        MyHouses.shared.syncHouses(completion: { (success) in
+            self.reloadHouses()
+        })
     }
     
     func reloadHouses() {
         houses = MyHouses.shared.houses
+        self.houses.sort { (houseA, houseB) -> Bool in
+            return houseA.rank > houseB.rank
+        }
         self.tableView.reloadData()
     }
     

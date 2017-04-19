@@ -20,6 +20,7 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     init(house: House) {
         self.house = house
         super.init(nibName: nil, bundle: nil)
+        house.syncCriteriaWithDreamHouse()
         MyHouses.shared.syncCriteria(for: house) { (success) in
             self.reloadCriteria()
         }
@@ -58,6 +59,20 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         // Navigation Bar
         navigationItem.rightBarButtonItem = editButtonItem
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        house.syncCriteriaWithDreamHouse()
+//        MyHouses.shared.syncCriteria(for: house) { (success) in
+//            self.reloadCriteria()
+//        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        MyHouses.shared.syncCriteria(for: house) { (success) in
+            self.reloadCriteria()
+        }
     }
     
     func refresh() {
@@ -124,30 +139,32 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let radio = notification.object as! RadioButton
         let criteriaSelector = radio.superview as! CriteriaSelector
         let cell = criteriaSelector.superview as! UITableViewCell
-        let indexPath = tableView.indexPath(for: cell)!
-        house.criteria[indexPath.section][indexPath.row].value = criteriaSelector.value
-        handleCriteriaUpdate(indexPath: indexPath)
+        let indexPath = tableView.indexPath(for: cell)
+        if indexPath != nil {
+            house.criteria[indexPath!.section][indexPath!.row].value = criteriaSelector.value
+            handleCriteriaUpdate(indexPath: indexPath!)
+        }
     }
     
     func handleCriteriaUpdate(indexPath: IndexPath) {
-        if Networking.token == "" && house.hid == 0 {
-            return
-        }
-        let id = self.house.criteria[indexPath.section][indexPath.row].id
-        let value = self.house.criteria[indexPath.section][indexPath.row].value
-        let headers = generateHeaders()
-        let parameters: Parameters = ["hid": house.hid, "id": id, "value": value]
-        Alamofire.request(Networking.baseURL + "/updateCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .responseString { response in
-                if (response.error != nil) {
-                    print("Update criterion failed: " + (response.error?.localizedDescription)!)
-                    return
-                }
-                let success = validate(statusCode: (response.response?.statusCode)!)
-                if !success {
-                    print("Update criterion failed: " + response.result.value!)
-                }
-        }
+//        if Networking.token == "" && house.hid == 0 {
+//            return
+//        }
+//        let id = self.house.criteria[indexPath.section][indexPath.row].id
+//        let value = self.house.criteria[indexPath.section][indexPath.row].value
+//        let headers = generateHeaders()
+//        let parameters: Parameters = ["hid": house.hid, "id": id, "value": value]
+//        Alamofire.request(Networking.baseURL + "/updateCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+//            .responseString { response in
+//                if (response.error != nil) {
+//                    print("Update criterion failed: " + (response.error?.localizedDescription)!)
+//                    return
+//                }
+//                let success = validate(statusCode: (response.response?.statusCode)!)
+//                if !success {
+//                    print("Update criterion failed: " + response.result.value!)
+//                }
+//        }
     }
     
     // Sections
@@ -182,15 +199,25 @@ class HouseViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        var actions = [UITableViewRowAction]()
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            let deletedHouse = self.house.criteria[indexPath.section].remove(at: indexPath.row)
-            self.house.deletedCriteria.append(deletedHouse)
+            self.house.removeCriterion(index: indexPath.row, from: indexPath.section)
             self.reloadCriteria()
         }
-        
-        return [delete]
+        if !self.house.criteria[indexPath.section][indexPath.row].isDream {
+            actions.append(delete)
+        }
+        return actions
     }
     
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if !self.house.criteria[indexPath.section][indexPath.row].isDream {
+            return .delete
+        }
+        return .none
+    }
+    
+    // Move Rows
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
 //        return isCriteriaRow(at: indexPath)
         return false

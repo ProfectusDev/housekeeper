@@ -183,7 +183,12 @@ class MyHouses {
         for (i, section) in house.criteria.enumerated() {
             for (j, criterion) in section.enumerated() {
                 if criterion.id == 0 {
-                    let parameters: Parameters = ["hid": house.hid, "name": criterion.name, "category": criterion.category.rawValue]
+                    let parameters: Parameters = [
+                        "hid": house.hid,
+                        "name": criterion.name,
+                        "category": criterion.category.rawValue,
+                        "isDream": criterion.isDream ? 1 : 0
+                    ]
                     Alamofire.request(Networking.baseURL + "/addCriterion", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseString { response in
                         switch response.result {
                         case .success:
