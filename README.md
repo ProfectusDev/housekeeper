@@ -36,6 +36,12 @@ Install Gude for HouseKeeper 1.0
 - BUILD
 	- No build necessary for this app. Can be run from xCode
 - INSTALLATION
-	- Follow xCode installation instructions
-	- From 
+	- SERVER - FILE
+		- Drag the index.js file into the root directory of your server
+	- WEBSITE
+		- Drag the folder into the /www directory of your server. In 'config.php', the user, password and database parameters need to be changed to reflect your server login and target database
+	- iOS APP
+		- Add Cocoapods to 'HouseKeeper.xcodeproj'. See https://guides.cocoapods.org/using/using-cocoapods.html
+		- Open resulting 'HouseKeeper.xcworkspace' file in xCode
 - RUNNING APPLICATION
+	- Click the Play Button in the upper-left corner of the xCode interface
